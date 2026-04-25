@@ -11,7 +11,8 @@ export async function generateCode(formData: FormData) {
   const expiresInHours = formData.get('expiresInHours') as string
   
   if (!videoId) {
-    return { error: 'Video ID is required' }
+    console.error('Video ID is required')
+    return
   }
 
   const code = Array.from(crypto.getRandomValues(new Uint8Array(4)))
@@ -37,9 +38,9 @@ export async function generateCode(formData: FormData) {
   })
 
   if (error) {
-    return { error: 'Failed to generate code' }
+    console.error('Failed to generate code:', error)
+    return
   }
 
   revalidatePath('/admin')
-  return { success: true }
 }

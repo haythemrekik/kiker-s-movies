@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { checkAccess, validateCode, getVideoUrl } from './actions'
 import { VideoPlayer } from '@/components/video-player/VideoPlayer'
 import { CodeInput } from '@/components/code-input/CodeInput'
@@ -6,6 +7,9 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { notFound } from 'next/navigation'
 import styles from './page.module.css'
+import { Database } from '@/types/database.types'
+
+type Video = Database['public']['Tables']['videos']['Row']
 
 export const dynamic = 'force-dynamic'
 
@@ -17,17 +21,21 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
     return null // Handled by middleware
   }
 
-  const { data: video } = await supabase
+  const admin = createAdminClient()
+  const { data: videoData } = await admin
     .from('videos')
     .select('*')
     .eq('id', params.id)
     .single()
+
+  const video = videoData as Video | null
 
   if (!video) {
     notFound()
   }
 
   const accessStatus = await checkAccess(params.id)
+
 
   return (
     <div className={styles.container}>

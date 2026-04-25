@@ -2,6 +2,10 @@ import { createClient } from '@/lib/supabase/server'
 import styles from './page.module.css'
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
+import { Database } from '@/types/database.types'
+
+type Video = Database['public']['Tables']['videos']['Row']
+type VideoView = Database['public']['Tables']['video_views']['Row']
 
 export const dynamic = 'force-dynamic'
 
@@ -9,26 +13,30 @@ export default async function DashboardPage() {
   const supabase = createClient()
   
   // Get all videos
-  const { data: videos, error: videosError } = await supabase
+  const { data: videosData } = await supabase
     .from('videos')
     .select('*')
     .order('created_at', { ascending: false })
 
+  const videos = videosData as Video[] | null
+
   // Get user's view history
   const { data: { user } } = await supabase.auth.getUser()
-  const { data: views, error: viewsError } = await supabase
+  const { data: viewsData } = await supabase
     .from('video_views')
     .select('*')
     .eq('user_id', user?.id || '')
 
-  const viewsMap = new Map((views || []).map(v => [v.video_id, v]))
+  const views = viewsData as VideoView[] | null
+
+  const viewsMap = new Map((views || []).map((v) => [v.video_id, v]))
 
   return (
     <div>
       <h1 className={styles.title}>Available Videos</h1>
       
       <div className={styles.grid}>
-        {videos?.map((video) => {
+        {(videos || []).map((video) => {
           const view = viewsMap.get(video.id)
           const watchCount = view?.watch_count || 0
           
@@ -39,7 +47,6 @@ export default async function DashboardPage() {
             statusText = 'Code Required'
             statusClass = styles.locked
           } else if (view) {
-            // It has a view record but watch count is 0 (redeemed)
             statusText = 'Available'
             statusClass = styles.available
           }
@@ -55,7 +62,7 @@ export default async function DashboardPage() {
               <p className={styles.cardDescription}>{video.description}</p>
               <div style={{ marginTop: 'auto' }}>
                 <Link href={`/video/${video.id}`}>
-                  <Button className="w-full" variant={watchCount > 0 ? 'outline' : 'default'}>
+                  <Button variant={watchCount > 0 ? 'outline' : 'default'}>
                     {watchCount > 0 ? 'Unlock Video' : 'Watch Now'}
                   </Button>
                 </Link>
@@ -64,7 +71,7 @@ export default async function DashboardPage() {
           )
         })}
         {(!videos || videos.length === 0) && (
-          <p className="text-muted-foreground">No videos available right now.</p>
+          <p style={{ color: 'var(--muted-foreground)' }}>No videos available right now.</p>
         )}
       </div>
     </div>
