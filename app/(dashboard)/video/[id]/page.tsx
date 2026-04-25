@@ -13,7 +13,8 @@ type Video = Database['public']['Tables']['videos']['Row']
 
 export const dynamic = 'force-dynamic'
 
-export default async function VideoPage({ params }: { params: { id: string } }) {
+export default async function VideoPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -25,7 +26,7 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
   const { data: videoData } = await admin
     .from('videos')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   const video = videoData as Video | null
@@ -34,7 +35,7 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
     notFound()
   }
 
-  const accessStatus = await checkAccess(params.id)
+  const accessStatus = await checkAccess(id)
 
 
   return (
@@ -49,9 +50,9 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
       </div>
  
       {accessStatus === 'allowed' ? (
-        <VideoPlayer videoId={params.id} email={user.email || 'user'} getUrlAction={getVideoUrl} />
+        <VideoPlayer videoId={id} email={user.email || 'user'} getUrlAction={getVideoUrl} />
       ) : accessStatus === 'code_required' ? (
-        <CodeInput videoId={params.id} validateAction={validateCode} />
+        <CodeInput videoId={id} validateAction={validateCode} />
       ) : (
         <div className={`glass-panel ${styles.errorCard}`}>
           Une erreur est survenue lors de la vérification de l'accès à cette vidéo.
