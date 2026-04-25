@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { generateCode } from './actions'
+import { UploadVideoForm } from './UploadVideoForm'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import styles from './page.module.css'
@@ -21,6 +22,9 @@ export default async function AdminPage() {
       </div>
 
       <div className={styles.grid}>
+        {/* Upload Video Form */}
+        <UploadVideoForm />
+
         {/* Generate Code Form */}
         <div className={`glass-panel ${styles.card}`}>
           <h2 className={styles.cardTitle}>Generate Access Code</h2>

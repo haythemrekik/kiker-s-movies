@@ -44,3 +44,47 @@ export async function generateCode(formData: FormData) {
 
   revalidatePath('/admin')
 }
+
+export async function getSignedUploadUrl(fileName: string, contentType: string) {
+  const supabaseAdmin = createAdminClient()
+  
+  // Clean file name: replace spaces with hyphens, remove special chars
+  const safeName = fileName.replace(/[^a-zA-Z0-9.\-]/g, '-').toLowerCase()
+  const path = `${Date.now()}-${safeName}`
+
+  const { data, error } = await supabaseAdmin
+    .storage
+    .from('videos')
+    .createSignedUploadUrl(path)
+
+  if (error || !data) {
+    console.error('Failed to create upload URL', error)
+    return { error: 'Failed to create upload URL' }
+  }
+
+  return { signedUrl: data.signedUrl, token: data.token, path }
+}
+
+export async function saveVideoRecord(title: string, description: string, path: string) {
+  if (!title || !path) {
+    return { error: 'Title and video file are required' }
+  }
+
+  const supabaseAdmin = createAdminClient()
+
+  const { error } = await supabaseAdmin.from('videos').insert({
+    title,
+    description: description || null,
+    video_path: path
+  })
+
+  if (error) {
+    console.error('Failed to save video record:', error)
+    return { error: 'Failed to save video record' }
+  }
+
+  revalidatePath('/admin')
+  revalidatePath('/dashboard')
+  return { success: true }
+}
+
