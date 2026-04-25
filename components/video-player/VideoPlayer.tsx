@@ -24,7 +24,7 @@ export function VideoPlayer({ videoId, email, getUrlAction }: VideoPlayerProps) 
           setUrl(res.url)
         }
       } catch (err) {
-        setError('Failed to fetch video')
+        setError('Échec de la récupération de la vidéo')
       } finally {
         setLoading(false)
       }
@@ -33,13 +33,13 @@ export function VideoPlayer({ videoId, email, getUrlAction }: VideoPlayerProps) 
   }, [videoId, getUrlAction])
 
   if (loading) {
-    return <div className={`glass-panel ${styles.messageCard}`}>Loading secure video player...</div>
+    return <div className={`glass-panel ${styles.messageCard}`}>Chargement du lecteur sécurisé...</div>
   }
 
   if (error) {
     return (
       <div className={`glass-panel ${styles.messageCard} ${styles.errorCard}`}>
-        <h3 className={styles.errorTitle}>Access Error</h3>
+        <h3 className={styles.errorTitle}>Erreur d'accès</h3>
         <p>{error}</p>
       </div>
     )
@@ -65,7 +65,7 @@ export function VideoPlayer({ videoId, email, getUrlAction }: VideoPlayerProps) 
         onContextMenu={(e) => e.preventDefault()}
         src={url}
       >
-        Your browser does not support the video tag.
+        Votre navigateur ne supporte pas la lecture de vidéos.
       </video>
       <div className={styles.watermark}>
         {watermarkElements}
@@ -73,3 +73,4 @@ export function VideoPlayer({ videoId, email, getUrlAction }: VideoPlayerProps) 
     </div>
   )
 }
+

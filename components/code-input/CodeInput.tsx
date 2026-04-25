@@ -20,7 +20,7 @@ export function CodeInput({ videoId, validateAction }: CodeInputProps) {
     setError(null)
     
     if (!code.trim()) {
-      setError('Please enter a code')
+      setError('Veuillez entrer un code')
       return
     }
 
@@ -37,9 +37,9 @@ export function CodeInput({ videoId, validateAction }: CodeInputProps) {
 
   return (
     <div className={`glass-panel ${styles.container}`}>
-      <h2 className={styles.title}>Access Restricted</h2>
+      <h2 className={styles.title}>Accès Restreint</h2>
       <p className={styles.description}>
-        This video is accessible only once. Please enter an access code provided by the administrator to watch it again.
+        Cette vidéo n'est accessible qu'une seule fois. Veuillez entrer un code d'accès fourni par l'administrateur pour la regarder à nouveau.
       </p>
       
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -51,14 +51,15 @@ export function CodeInput({ videoId, validateAction }: CodeInputProps) {
         <Input 
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder="Enter Access Code" 
+          placeholder="Entrez le code d'accès" 
           disabled={isPending}
         />
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Validating...' : 'Unlock Video'}
+          {isPending ? 'Validation...' : 'Débloquer la vidéo'}
         </Button>
       </form>
     </div>
   )
 }
+
 

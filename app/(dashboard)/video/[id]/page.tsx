@@ -40,24 +40,25 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
   return (
     <div className={styles.container}>
       <Link href="/dashboard" className={styles.backButton}>
-        <Button variant="ghost" size="sm">← Back to Dashboard</Button>
+        <Button variant="ghost" size="sm">← Retour au tableau de bord</Button>
       </Link>
       
       <div className={styles.header}>
         <h1 className={styles.title}>{video.title}</h1>
         <p className={styles.description}>{video.description}</p>
       </div>
-
+ 
       {accessStatus === 'allowed' ? (
         <VideoPlayer videoId={params.id} email={user.email || 'user'} getUrlAction={getVideoUrl} />
       ) : accessStatus === 'code_required' ? (
         <CodeInput videoId={params.id} validateAction={validateCode} />
       ) : (
         <div className={`glass-panel ${styles.errorCard}`}>
-          An error occurred checking access to this video.
+          Une erreur est survenue lors de la vérification de l'accès à cette vidéo.
         </div>
       )}
     </div>
   )
 }
+
 

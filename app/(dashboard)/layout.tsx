@@ -12,8 +12,14 @@ export default async function DashboardLayout({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   
-  // Note: we can verify admin via metadata, but for now we'll just link to admin
-  // A real app might check `user?.app_metadata?.role === 'admin'` or via DB.
+  // Check for admin role
+  const { data: roleData } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', user?.id || '')
+    .single() as any
+
+  const isAdmin = roleData?.role === 'admin'
 
   return (
     <div>
@@ -23,11 +29,13 @@ export default async function DashboardLayout({
         </div>
         <div className={styles.nav}>
           <span className="text-sm text-muted-foreground">{user?.email}</span>
-          <Link href="/admin">
-            <Button variant="ghost" size="sm">Admin</Button>
-          </Link>
+          {isAdmin && (
+            <Link href="/admin">
+              <Button variant="ghost" size="sm">Admin</Button>
+            </Link>
+          )}
           <form action={signout}>
-            <Button variant="outline" size="sm" type="submit">Sign Out</Button>
+            <Button variant="outline" size="sm" type="submit">Déconnexion</Button>
           </form>
         </div>
       </header>
@@ -37,3 +45,4 @@ export default async function DashboardLayout({
     </div>
   )
 }
+

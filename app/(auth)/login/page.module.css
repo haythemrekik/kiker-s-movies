@@ -60,3 +60,31 @@
   border-radius: var(--radius);
   border: 1px solid rgba(127, 29, 29, 0.2);
 }
+
+.tabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem;
+  border-radius: calc(var(--radius) - 2px);
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: calc(var(--radius) - 4px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--muted-foreground);
+  border: none;
+  background: transparent;
+}
+
+.tabActive {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+

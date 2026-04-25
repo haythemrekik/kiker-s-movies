@@ -18,52 +18,52 @@ export default async function AdminPage() {
   return (
     <div className={styles.container}>
       <div>
-        <h1 className={styles.title}>Admin Dashboard</h1>
+        <h1 className={styles.title}>Tableau de bord Administrateur</h1>
       </div>
-
+ 
       <div className={styles.grid}>
         {/* Upload Video Form */}
         <UploadVideoForm />
 
         {/* Generate Code Form */}
         <div className={`glass-panel ${styles.card}`}>
-          <h2 className={styles.cardTitle}>Generate Access Code</h2>
+          <h2 className={styles.cardTitle}>Générer un code d'accès</h2>
           <form action={generateCode} className={styles.form}>
             <div className={styles.formGroup}>
-              <label className={styles.label}>Video</label>
+              <label className={styles.label}>Vidéo</label>
               <select 
                 name="videoId" 
                 required 
                 className={styles.select}
               >
-                <option value="">Select a video</option>
+                <option value="">Sélectionner une vidéo</option>
                 {videos?.map(v => (
                   <option key={v.id} value={v.id}>{v.title}</option>
                 ))}
               </select>
             </div>
             <div className={styles.formGroup}>
-              <label className={styles.label}>User ID (Optional)</label>
-              <Input name="userId" placeholder="Leave blank for global code" />
+              <label className={styles.label}>ID Utilisateur (Optionnel)</label>
+              <Input name="userId" placeholder="Laisser vide pour un code global" />
             </div>
             <div className={styles.formGroup}>
-              <label className={styles.label}>Expires In (Hours, Optional)</label>
-              <Input type="number" name="expiresInHours" placeholder="e.g. 24" />
+              <label className={styles.label}>Expire dans (Heures, Optionnel)</label>
+              <Input type="number" name="expiresInHours" placeholder="ex: 24" />
             </div>
-            <Button type="submit">Generate Code</Button>
+            <Button type="submit">Générer le code</Button>
           </form>
         </div>
-
+ 
         {/* List of Codes */}
         <div className={`glass-panel ${styles.card}`}>
-          <h2 className={styles.cardTitle}>Recent Access Codes</h2>
+          <h2 className={styles.cardTitle}>Codes d'accès récents</h2>
           <div className={styles.tableContainer}>
             <table className={styles.table}>
               <thead>
                 <tr>
                   <th className={styles.th}>Code</th>
-                  <th className={styles.th}>Video</th>
-                  <th className={styles.th}>Status</th>
+                  <th className={styles.th}>Vidéo</th>
+                  <th className={styles.th}>Statut</th>
                 </tr>
               </thead>
               <tbody>
@@ -72,13 +72,13 @@ export default async function AdminPage() {
                     <td className={`${styles.td} ${styles.tdMono}`}>{code.code}</td>
                     <td className={`${styles.td} ${styles.tdTruncate}`}>
                       {/* @ts-ignore - Supabase join typing */}
-                      {code.videos?.title || 'Unknown'}
+                      {code.videos?.title || 'Inconnu'}
                     </td>
                     <td className={styles.td}>
                       {code.is_used ? (
-                        <span className={styles.textDestructive}>Used</span>
+                        <span className={styles.textDestructive}>Utilisé</span>
                       ) : (
-                        <span className={styles.textSuccess}>Active</span>
+                        <span className={styles.textSuccess}>Actif</span>
                       )}
                     </td>
                   </tr>
@@ -86,7 +86,7 @@ export default async function AdminPage() {
                 {(!codes || codes.length === 0) && (
                   <tr>
                     <td colSpan={3} className={styles.td} style={{ textAlign: 'center' }}>
-                      No codes generated yet.
+                      Aucun code généré pour le moment.
                     </td>
                   </tr>
                 )}
@@ -98,4 +98,5 @@ export default async function AdminPage() {
     </div>
   )
 }
+
 

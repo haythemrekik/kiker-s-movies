@@ -45,7 +45,7 @@ export async function validateCode(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) return { success: false, error: 'Not authenticated' }
+  if (!user) return { success: false, error: 'Non authentifié' }
 
   const admin = createAdminClient()
 
@@ -56,7 +56,7 @@ export async function validateCode(
   })
 
   if (error || !success) {
-    return { success: false, error: 'Invalid, expired, or already used code.' }
+    return { success: false, error: 'Code invalide, expiré ou déjà utilisé.' }
   }
 
   return { success: true }
@@ -68,12 +68,12 @@ export async function getVideoUrl(
   const status = await checkAccess(videoId)
 
   if (status !== 'allowed') {
-    return { error: 'Access denied' }
+    return { error: 'Accès refusé' }
   }
 
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  if (!user) return { error: 'Non authentifié' }
 
   const admin = createAdminClient()
 
@@ -85,7 +85,7 @@ export async function getVideoUrl(
     .single()
 
   const video = videoData as { video_path: string } | null
-  if (!video) return { error: 'Video not found' }
+  if (!video) return { error: 'Vidéo introuvable' }
 
   // Mark as viewed (use admin to bypass RLS)
   const { data: viewData } = await admin
@@ -119,8 +119,9 @@ export async function getVideoUrl(
     .createSignedUrl(video.video_path, 60)
 
   if (urlError || !urlData) {
-    return { error: 'Could not generate video URL' }
+    return { error: 'Impossible de générer l\'URL de la vidéo' }
   }
+
 
   return { url: urlData.signedUrl }
 }

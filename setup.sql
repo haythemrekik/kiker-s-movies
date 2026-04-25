@@ -109,3 +109,31 @@ BEGIN
     RETURN TRUE;
 END;
 $$;
+
+-- 6. User Roles Table
+CREATE TABLE public.user_roles (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE,
+    role TEXT NOT NULL CHECK (role IN ('admin', 'user')) DEFAULT 'user',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS
+ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
+
+-- Policies for user_roles
+CREATE POLICY "Users can view their own role" 
+    ON public.user_roles FOR SELECT 
+    USING (auth.uid() = user_id);
+
+-- Admin check function
+CREATE OR REPLACE FUNCTION is_admin()
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM public.user_roles
+    WHERE user_id = auth.uid() AND role = 'admin'
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+

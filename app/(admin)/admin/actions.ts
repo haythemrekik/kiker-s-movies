@@ -59,7 +59,7 @@ export async function getSignedUploadUrl(fileName: string, contentType: string) 
 
   if (error || !data) {
     console.error('Failed to create upload URL', error)
-    return { error: 'Failed to create upload URL' }
+    return { error: 'Impossible de créer l\'URL d\'upload' }
   }
 
   return { signedUrl: data.signedUrl, token: data.token, path }
@@ -67,7 +67,7 @@ export async function getSignedUploadUrl(fileName: string, contentType: string) 
 
 export async function saveVideoRecord(title: string, description: string, path: string) {
   if (!title || !path) {
-    return { error: 'Title and video file are required' }
+    return { error: 'Le titre et le fichier vidéo sont obligatoires' }
   }
 
   const supabaseAdmin = createAdminClient()
@@ -80,8 +80,9 @@ export async function saveVideoRecord(title: string, description: string, path: 
 
   if (error) {
     console.error('Failed to save video record:', error)
-    return { error: 'Failed to save video record' }
+    return { error: 'Échec de l\'enregistrement de la vidéo' }
   }
+
 
   revalidatePath('/admin')
   revalidatePath('/dashboard')

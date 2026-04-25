@@ -33,21 +33,21 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className={styles.title}>Available Videos</h1>
+      <h1 className={styles.title}>Vidéos disponibles</h1>
       
       <div className={styles.grid}>
         {(videos || []).map((video) => {
           const view = viewsMap.get(video.id)
           const watchCount = view?.watch_count || 0
           
-          let statusText = 'Available'
+          let statusText = 'Disponible'
           let statusClass = styles.available
           
           if (watchCount > 0) {
-            statusText = 'Code Required'
+            statusText = 'Code requis'
             statusClass = styles.locked
           } else if (view) {
-            statusText = 'Available'
+            statusText = 'Disponible'
             statusClass = styles.available
           }
 
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
               <div style={{ marginTop: 'auto' }}>
                 <Link href={`/video/${video.id}`}>
                   <Button variant={watchCount > 0 ? 'outline' : 'default'}>
-                    {watchCount > 0 ? 'Unlock Video' : 'Watch Now'}
+                    {watchCount > 0 ? 'Débloquer' : 'Regarder'}
                   </Button>
                 </Link>
               </div>
@@ -71,9 +71,10 @@ export default async function DashboardPage() {
           )
         })}
         {(!videos || videos.length === 0) && (
-          <p style={{ color: 'var(--muted-foreground)' }}>No videos available right now.</p>
+          <p style={{ color: 'var(--muted-foreground)' }}>Aucune vidéo disponible pour le moment.</p>
         )}
       </div>
     </div>
   )
 }
+

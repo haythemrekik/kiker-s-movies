@@ -19,7 +19,7 @@ export function UploadVideoForm() {
     e.preventDefault()
     
     if (!file || !title) {
-      setMessage({ type: 'error', text: 'Please provide a title and a video file.' })
+      setMessage({ type: 'error', text: 'Veuillez fournir un titre et un fichier vidéo.' })
       return
     }
 
@@ -32,7 +32,7 @@ export function UploadVideoForm() {
       const { signedUrl, token, path, error: urlError } = await getSignedUploadUrl(file.name, file.type)
       
       if (urlError || !signedUrl || !path) {
-        throw new Error(urlError || 'Could not get upload URL')
+        throw new Error(urlError || 'Impossible d\'obtenir l\'URL d\'upload')
       }
 
       setProgress(30) // Got URL
@@ -44,7 +44,7 @@ export function UploadVideoForm() {
         .uploadToSignedUrl(path, token, file)
 
       if (uploadError) {
-        throw new Error(`Upload failed: ${uploadError.message}`)
+        throw new Error(`Échec de l'envoi : ${uploadError.message}`)
       }
 
       setProgress(80) // Upload complete
@@ -57,7 +57,7 @@ export function UploadVideoForm() {
       }
 
       setProgress(100) // Done
-      setMessage({ type: 'success', text: 'Video uploaded successfully!' })
+      setMessage({ type: 'success', text: 'Vidéo ajoutée avec succès !' })
       
       // Reset form
       setFile(null)
@@ -68,7 +68,7 @@ export function UploadVideoForm() {
       }
       
     } catch (err: any) {
-      setMessage({ type: 'error', text: err.message || 'An unexpected error occurred' })
+      setMessage({ type: 'error', text: err.message || 'Une erreur inattendue est survenue' })
     } finally {
       setIsUploading(false)
       setTimeout(() => setProgress(0), 2000)
@@ -77,7 +77,7 @@ export function UploadVideoForm() {
 
   return (
     <div className={`glass-panel ${styles.card}`}>
-      <h2 className={styles.cardTitle}>Upload New Video</h2>
+      <h2 className={styles.cardTitle}>Ajouter une nouvelle vidéo</h2>
       
       {message && (
         <div className={message.type === 'error' ? styles.textDestructive : styles.textSuccess} style={{ marginBottom: '1rem' }}>
@@ -87,12 +87,12 @@ export function UploadVideoForm() {
 
       <form onSubmit={handleUpload} className={styles.form}>
         <div className={styles.formGroup}>
-          <label className={styles.label}>Title *</label>
+          <label className={styles.label}>Titre *</label>
           <Input 
             required 
             value={title} 
             onChange={e => setTitle(e.target.value)} 
-            placeholder="E.g., Inception" 
+            placeholder="ex: Inception" 
             disabled={isUploading}
           />
         </div>
@@ -104,13 +104,13 @@ export function UploadVideoForm() {
             style={{ minHeight: '80px', padding: '0.5rem', resize: 'vertical' }}
             value={description} 
             onChange={e => setDescription(e.target.value)} 
-            placeholder="A brief description of the video..."
+            placeholder="Une brève description de la vidéo..."
             disabled={isUploading}
           />
         </div>
         
         <div className={styles.formGroup}>
-          <label className={styles.label}>Video File *</label>
+          <label className={styles.label}>Fichier Vidéo *</label>
           <input 
             type="file" 
             id="videoFile"
@@ -130,9 +130,10 @@ export function UploadVideoForm() {
         )}
 
         <Button type="submit" disabled={isUploading || !file || !title}>
-          {isUploading ? `Uploading... ${progress}%` : 'Upload Video'}
+          {isUploading ? `Envoi en cours... ${progress}%` : 'Ajouter la vidéo'}
         </Button>
       </form>
     </div>
   )
 }
+
