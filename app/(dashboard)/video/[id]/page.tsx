@@ -14,7 +14,7 @@ type Video = Database['public']['Tables']['videos']['Row']
 export const dynamic = 'force-dynamic'
 
 export default async function VideoPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {

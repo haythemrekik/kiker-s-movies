@@ -7,7 +7,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 export type AccessStatus = 'allowed' | 'code_required' | 'error' | 'not_found'
 
 export async function checkAccess(videoId: string): Promise<AccessStatus> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) return 'error'
@@ -42,7 +42,7 @@ export async function validateCode(
   videoId: string,
   code: string
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) return { success: false, error: 'Not authenticated' }
@@ -71,7 +71,7 @@ export async function getVideoUrl(
     return { error: 'Access denied' }
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 

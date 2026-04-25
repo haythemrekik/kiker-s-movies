@@ -4,16 +4,13 @@ import styles from './layout.module.css'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 
-export default async function DashboardLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  
-  // Note: we can verify admin via metadata, but for now we'll just link to admin
-  // A real app might check `user?.app_metadata?.role === 'admin'` or via DB.
 
   return (
     <div>
@@ -22,9 +19,9 @@ export default async function DashboardLayout({
           <Link href="/dashboard">Kiker&apos;s movies</Link>
         </div>
         <div className={styles.nav}>
-          <span className="text-sm text-muted-foreground">{user?.email}</span>
-          <Link href="/admin">
-            <Button variant="ghost" size="sm">Admin</Button>
+          <span style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>{user?.email}</span>
+          <Link href="/dashboard">
+            <Button variant="ghost" size="sm">Dashboard</Button>
           </Link>
           <form action={signout}>
             <Button variant="outline" size="sm" type="submit">Sign Out</Button>

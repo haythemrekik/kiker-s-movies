@@ -10,7 +10,7 @@ type VideoView = Database['public']['Tables']['video_views']['Row']
 export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // Get all videos
   const { data: videosData } = await supabase
