@@ -38,17 +38,23 @@ export default async function DashboardPage() {
       <div className={styles.grid}>
         {(videos || []).map((video) => {
           const view = viewsMap.get(video.id)
-          const watchCount = view?.watch_count || 0
-          
-          let statusText = 'Disponible'
-          let statusClass = styles.available
-          
-          if (watchCount > 0) {
+          const watchCount = view?.watch_count
+
+          // No view record = never used a code → code required
+          // watch_count === 0 = code redeemed, ready to watch → disponible
+          // watch_count > 0 = already watched, needs a new code → code required
+          let statusText = 'Code requis'
+          let statusClass = styles.locked
+          let buttonLabel = 'Obtenir un code'
+
+          if (view !== undefined && watchCount === 0) {
+            statusText = 'Prêt à regarder'
+            statusClass = styles.available
+            buttonLabel = 'Regarder'
+          } else if (view !== undefined && watchCount! > 0) {
             statusText = 'Code requis'
             statusClass = styles.locked
-          } else if (view) {
-            statusText = 'Disponible'
-            statusClass = styles.available
+            buttonLabel = 'Débloquer'
           }
 
           return (
@@ -62,8 +68,8 @@ export default async function DashboardPage() {
               <p className={styles.cardDescription}>{video.description}</p>
               <div style={{ marginTop: 'auto' }}>
                 <Link href={`/video/${video.id}`}>
-                  <Button variant={watchCount > 0 ? 'outline' : 'default'}>
-                    {watchCount > 0 ? 'Débloquer' : 'Regarder'}
+                  <Button variant={statusText === 'Prêt à regarder' ? 'default' : 'outline'}>
+                    {buttonLabel}
                   </Button>
                 </Link>
               </div>

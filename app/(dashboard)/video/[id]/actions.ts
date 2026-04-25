@@ -32,10 +32,12 @@ export async function checkAccess(videoId: string): Promise<AccessStatus> {
 
   const view = viewData as { watch_count: number } | null
 
-  if (!view) return 'allowed'
-  if (view.watch_count > 0) return 'code_required'
-
-  return 'allowed'
+  // No view record = never redeemed a code → require code
+  if (!view) return 'code_required'
+  // watch_count === 0 = code was redeemed and watch hasn't been counted yet → allow
+  if (view.watch_count === 0) return 'allowed'
+  // watch_count > 0 = already watched, need a new code
+  return 'code_required'
 }
 
 export async function validateCode(
