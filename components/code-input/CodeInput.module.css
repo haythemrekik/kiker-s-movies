@@ -1,0 +1,33 @@
+.container {
+  padding: 2rem;
+  border-radius: var(--radius);
+  max-width: 28rem;
+  margin: 3rem auto 0;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: var(--muted-foreground);
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.error {
+  background-color: rgba(127, 29, 29, 0.1);
+  color: var(--destructive);
+  border: 1px solid rgba(127, 29, 29, 0.2);
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+}

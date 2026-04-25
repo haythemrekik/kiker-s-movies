@@ -1,0 +1,32 @@
+.container {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.backButton {
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: var(--muted-foreground);
+}
+
+.errorCard {
+  padding: 2rem;
+  text-align: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--destructive);
+  color: var(--destructive);
+}
