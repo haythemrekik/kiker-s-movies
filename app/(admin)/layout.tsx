@@ -34,7 +34,7 @@ export default async function AdminLayout({
       <header className={styles.header}>
         <div className={styles.brand}>
           <Link href="/dashboard">
-            <Image src="/logo12.png" alt="OneView" width={120} height={40} className={styles.logo} />
+            <Image src="/logo12.png" alt="OneView" width={100} height={32} className={styles.logo} />
           </Link>
         </div>
         <div className={styles.nav}>
