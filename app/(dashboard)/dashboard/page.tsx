@@ -109,18 +109,27 @@ export default async function DashboardPage() {
                   {/* Icon + Badge row */}
                   <div className={styles.cardTop}>
                     <div className={styles.filmIcon}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
-                        <line x1="7" y1="2" x2="7" y2="22"/>
-                        <line x1="17" y1="2" x2="17" y2="22"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <line x1="2" y1="7" x2="7" y2="7"/>
-                        <line x1="2" y1="17" x2="7" y2="17"/>
-                        <line x1="17" y1="17" x2="22" y2="17"/>
-                        <line x1="17" y1="7" x2="22" y2="7"/>
-                      </svg>
+                      {video.youtube_video_id ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+                          <line x1="7" y1="2" x2="7" y2="22"/>
+                          <line x1="17" y1="2" x2="17" y2="22"/>
+                          <line x1="2" y1="12" x2="22" y2="12"/>
+                          <line x1="2" y1="7" x2="7" y2="7"/>
+                          <line x1="2" y1="17" x2="7" y2="17"/>
+                          <line x1="17" y1="17" x2="22" y2="17"/>
+                          <line x1="17" y1="7" x2="22" y2="7"/>
+                        </svg>
+                      )}
                     </div>
-                    <span className={`${styles.badge} ${statusClass}`}>{statusText}</span>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      {video.youtube_video_id && <span className={styles.badge} style={{ background: 'rgba(255,0,0,0.1)', color: '#ff4444', border: '1px solid rgba(255,0,0,0.2)' }}>YouTube</span>}
+                      <span className={`${styles.badge} ${statusClass}`}>{statusText}</span>
+                    </div>
                   </div>
 
                   {/* Content */}

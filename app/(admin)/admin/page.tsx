@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { generateCode } from './actions'
 import { UploadVideoForm } from './UploadVideoForm'
+import { AddYouTubeForm } from './AddYouTubeForm'
 import { VideoList } from './VideoList'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -23,6 +24,7 @@ export default async function AdminPage() {
       <div className={styles.grid}>
         {/* Management & Upload Section */}
         <div className={styles.column}>
+          <AddYouTubeForm />
           <UploadVideoForm />
           <VideoList videos={videos} />
         </div>

@@ -97,6 +97,31 @@ export async function saveVideoRecord(title: string, description: string, path: 
   return { success: true }
 }
 
+export async function saveYouTubeVideo(title: string, description: string, youtubeVideoId: string) {
+  if (!title || !youtubeVideoId) {
+    return { error: 'Le titre et l\'ID YouTube sont obligatoires' }
+  }
+
+  const supabaseAdmin = createAdminClient()
+
+  const { error } = await supabaseAdmin.from('videos').insert({
+    title,
+    description: description || null,
+    youtube_video_id: youtubeVideoId,
+    video_path: null
+  })
+
+  if (error) {
+    console.error('Failed to save YouTube video record:', error)
+    return { error: 'Échec de l\'enregistrement de la vidéo YouTube' }
+  }
+
+  revalidatePath('/admin')
+  revalidatePath('/dashboard')
+  revalidatePath('/')
+  return { success: true }
+}
+
 export async function deleteVideo(videoId: string, videoPath?: string) {
   const supabaseAdmin = createAdminClient()
 

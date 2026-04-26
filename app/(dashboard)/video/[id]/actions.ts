@@ -85,11 +85,11 @@ export async function getVideoUrl(
   // Get the video path
   const { data: videoData } = await admin
     .from('videos')
-    .select('video_path')
+    .select('video_path, youtube_video_id')
     .eq('id', videoId)
     .single()
 
-  const video = videoData as { video_path: string } | null
+  const video = videoData as { video_path: string | null; youtube_video_id: string | null } | null
   if (!video) return { error: 'Vidéo introuvable' }
 
   // Mark as viewed (use admin to bypass RLS)
@@ -117,6 +117,15 @@ export async function getVideoUrl(
       .eq('video_id', videoId)
   }
 
+  // If it's a YouTube video, we don't need a signed B2 URL
+  if (video.youtube_video_id) {
+    return { url: 'YOUTUBE' } // Signal it's a YouTube video (though the page handles this)
+  }
+
+  if (!video.video_path) {
+    return { error: 'Chemin vidéo manquant' }
+  }
+
   // Generate 60-second signed URL from B2
   try {
     const command = new GetObjectCommand({
@@ -131,3 +140,4 @@ export async function getVideoUrl(
     return { error: 'Impossible de générer l\'URL de la vidéo B2' }
   }
 }
+

@@ -99,21 +99,24 @@ export interface Database {
           description: string | null
           id: string
           title: string
-          video_path: string
+          video_path: string | null
+          youtube_video_id: string | null
         }
         Insert: {
           created_at?: string
           description?: string | null
           id?: string
           title: string
-          video_path: string
+          video_path?: string | null
+          youtube_video_id?: string | null
         }
         Update: {
           created_at?: string
           description?: string | null
           id?: string
           title?: string
-          video_path?: string
+          video_path?: string | null
+          youtube_video_id?: string | null
         }
         Relationships: []
       }

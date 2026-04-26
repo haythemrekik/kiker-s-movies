@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { checkAccess, validateCode, getVideoUrl } from './actions'
 import { VideoPlayer } from '@/components/video-player/VideoPlayer'
+import { YouTubePlayer } from '@/components/youtube-player/YouTubePlayer'
 import { CodeInput } from '@/components/code-input/CodeInput'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
@@ -37,7 +38,6 @@ export default async function VideoPage({ params }: { params: Promise<{ id: stri
 
   const accessStatus = await checkAccess(id)
 
-
   return (
     <div className={styles.container}>
       <Link href="/dashboard" className={styles.backButton}>
@@ -50,7 +50,11 @@ export default async function VideoPage({ params }: { params: Promise<{ id: stri
       </div>
  
       {accessStatus === 'allowed' ? (
-        <VideoPlayer videoId={id} email={user.email || 'user'} getUrlAction={getVideoUrl} />
+        video.youtube_video_id ? (
+          <YouTubePlayer videoId={id} youtubeVideoId={video.youtube_video_id} email={user.email || 'user'} />
+        ) : (
+          <VideoPlayer videoId={id} email={user.email || 'user'} getUrlAction={getVideoUrl} />
+        )
       ) : accessStatus === 'code_required' ? (
         <CodeInput videoId={id} validateAction={validateCode} />
       ) : (
@@ -61,5 +65,6 @@ export default async function VideoPage({ params }: { params: Promise<{ id: stri
     </div>
   )
 }
+
 
 
