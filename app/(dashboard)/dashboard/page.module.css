@@ -8,23 +8,42 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
 
 .card {
-  padding: 1.75rem;
+  padding: 1.5rem;
   border-radius: var(--radius);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   background: rgba(15, 15, 15, 0.4);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(66, 160, 179, 0.15);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.25rem;
+  }
+}
+
 
 .card:hover {
   transform: translateY(-4px);
