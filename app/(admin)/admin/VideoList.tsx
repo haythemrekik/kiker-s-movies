@@ -1,7 +1,7 @@
 'use client'
  
 import { useState } from 'react'
-import { deleteVideo, updateVideo } from './actions'
+import { deleteVideo, updateVideo, toggleVideoVisibility } from './actions'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import styles from './page.module.css'
@@ -109,6 +109,12 @@ export function VideoList({ videos }: { videos: Video[] | null }) {
                       <>
                         <Button size="sm" variant="ghost" onClick={() => startEdit(video)}>
                           Modifier
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={async () => {
+                          const res = await toggleVideoVisibility(video.id, video.is_hidden)
+                          if (res?.error) alert(res.error)
+                        }}>
+                          {video.is_hidden ? 'Afficher' : 'Masquer'}
                         </Button>
                         <Button size="sm" variant="destructive" onClick={() => handleDelete(video.id, video.video_path)}>
                           Sup.

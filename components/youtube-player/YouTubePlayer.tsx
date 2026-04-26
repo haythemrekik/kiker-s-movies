@@ -35,6 +35,8 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
 
+  const lastTimeRef = useRef(0)
+
   // Track progress when playing
   useEffect(() => {
     let interval: NodeJS.Timeout
@@ -43,9 +45,16 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
         if (playerRef.current && playerRef.current.getCurrentTime) {
           const current = playerRef.current.getCurrentTime()
           const total = playerRef.current.getDuration()
-          setCurrentTime(current)
-          setDuration(total)
-          setProgress((current / total) * 100)
+          
+          // Anti-rewind enforcement
+          if (current < lastTimeRef.current - 1) {
+            playerRef.current.seekTo(lastTimeRef.current, true)
+          } else {
+            lastTimeRef.current = current
+            setCurrentTime(current)
+            setDuration(total)
+            setProgress((current / total) * 100)
+          }
         }
       }, 500)
     }
@@ -167,7 +176,12 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
     const rect = timelineRef.current.getBoundingClientRect()
     const percent = (e.clientX - rect.left) / rect.width
     const newTime = percent * duration
+    
+    // Anti-rewind logic
+    if (newTime < currentTime) return
+    
     playerRef.current.seekTo(newTime, true)
+    lastTimeRef.current = newTime
     setCurrentTime(newTime)
     setProgress(percent * 100)
   }

@@ -15,6 +15,7 @@ export default async function DashboardPage() {
   const { data: videosData } = await supabase
     .from('videos')
     .select('*')
+    .eq('is_hidden', false)
     .order('created_at', { ascending: false })
 
   const videos = videosData as Video[] | null

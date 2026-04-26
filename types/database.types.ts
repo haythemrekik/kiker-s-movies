@@ -98,6 +98,7 @@ export interface Database {
           created_at: string
           description: string | null
           id: string
+          is_hidden: boolean
           title: string
           video_path: string | null
           youtube_video_id: string | null
@@ -106,6 +107,7 @@ export interface Database {
           created_at?: string
           description?: string | null
           id?: string
+          is_hidden?: boolean
           title: string
           video_path?: string | null
           youtube_video_id?: string | null
@@ -114,6 +116,7 @@ export interface Database {
           created_at?: string
           description?: string | null
           id?: string
+          is_hidden?: boolean
           title?: string
           video_path?: string | null
           youtube_video_id?: string | null

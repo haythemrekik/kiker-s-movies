@@ -159,3 +159,22 @@ export async function updateVideo(videoId: string, title: string, description: s
   return { success: true }
 }
 
+export async function toggleVideoVisibility(videoId: string, currentHiddenStatus: boolean) {
+  const supabaseAdmin = createAdminClient()
+
+  const { error } = await supabaseAdmin
+    .from('videos')
+    .update({ is_hidden: !currentHiddenStatus })
+    .eq('id', videoId)
+
+  if (error) {
+    console.error('Failed to toggle video visibility:', error)
+    return { error: 'Échec de la modification de visibilité' }
+  }
+
+  revalidatePath('/admin')
+  revalidatePath('/dashboard')
+  revalidatePath('/')
+  return { success: true }
+}
+
