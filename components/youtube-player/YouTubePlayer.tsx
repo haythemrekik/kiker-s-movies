@@ -129,6 +129,9 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
           }}
         />
         
+        {/* Top right overlay blocks the Share button specifically */}
+        <div className={styles.shareBlocker} />
+        
         {/* Bottom right overlay blocks the YouTube logo watermark in the control bar */}
         <div className={styles.logoBlocker} />
       </div>
