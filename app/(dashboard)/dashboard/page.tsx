@@ -81,7 +81,7 @@ export default async function DashboardPage() {
             <p className={styles.emptyText}>Aucune vidéo disponible pour le moment.</p>
           </div>
         ) : (
-          <div className={styles.grid}>
+          <div className={`${styles.grid} ${videos.length === 1 ? styles.gridSingle : ''}`}>
             {videos.map((video) => {
               const view = viewsMap.get(video.id)
               const watchCount = view?.watch_count
