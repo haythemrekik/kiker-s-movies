@@ -77,7 +77,7 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
         <div className={styles.endedIcon}>✓</div>
         <h3 className={styles.endedTitle}>Visionnage terminé</h3>
         <p className={styles.endedSubtitle}>
-          Cette vidéo YouTube a été marquée comme vue. Un nouveau code d'accès sera nécessaire pour la revoir.
+          Cette vidéo a été marquée comme vue. Un nouveau code d'accès sera nécessaire pour la revoir.
         </p>
       </div>
     )
