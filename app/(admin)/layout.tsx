@@ -38,7 +38,7 @@ export default async function AdminLayout({
           </Link>
         </div>
         <div className={styles.nav}>
-          <span style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', display: 'var(--show-email, block)' }}>{user?.email}</span>
+          <span className={styles.navEmail} style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>{user?.email}</span>
           <Link href="/dashboard">
             <Button variant="ghost" size="sm">Tableau de bord</Button>
           </Link>

@@ -31,7 +31,7 @@ export default async function DashboardLayout({
           </Link>
         </div>
         <div className={styles.nav}>
-          <span className="text-sm text-muted-foreground" style={{ display: 'var(--show-email, block)' }}>{user?.email}</span>
+          <span className={`text-sm text-muted-foreground ${styles.navEmail}`}>{user?.email}</span>
           {isAdmin && (
             <Link href="/admin">
               <Button variant="ghost" size="sm">Admin</Button>

@@ -59,9 +59,9 @@
     justify-content: flex-end;
     gap: 0.5rem;
   }
-  
-  :global {
-    --show-email: none;
+
+  .navEmail {
+    display: none;
   }
 }
 
