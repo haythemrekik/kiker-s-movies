@@ -2,21 +2,30 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  padding: 0.75rem 2rem;
+  margin: 1.5rem auto;
+  max-width: 1200px;
+  width: calc(100% - 3rem);
+  border-radius: 100px;
+  background: rgba(15, 15, 15, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   position: sticky;
-  top: 0;
+  top: 1.5rem;
   z-index: 50;
+  transition: all 0.3s ease;
 }
 
 @media (max-width: 640px) {
   .header {
-    padding: 0.75rem 1rem;
+    margin: 1rem auto;
+    width: calc(100% - 2rem);
+    padding: 0.75rem 1.5rem;
     flex-direction: column;
     gap: 0.75rem;
+    border-radius: 20px; /* Less rounded on mobile because it stacks */
     align-items: center;
   }
 }
@@ -34,7 +43,7 @@
 
 @media (max-width: 640px) {
   .logo {
-    width: 140px;
+    width: 120px;
   }
 }
 
@@ -51,7 +60,6 @@
     gap: 0.5rem;
   }
 }
-
 
 .main {
   padding: 2rem;
