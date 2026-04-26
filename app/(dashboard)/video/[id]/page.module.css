@@ -1,32 +1,40 @@
 .container {
-  max-width: 56rem;
+  max-width: 64rem;
   margin: 0 auto;
   padding: 2rem;
 }
 
 .backButton {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   display: inline-block;
 }
 
 .header {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(66, 160, 179, 0.1);
+  padding-bottom: 1.5rem;
 }
 
 .title {
-  font-size: 1.875rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #fff;
+  letter-spacing: -0.02em;
 }
 
 .description {
-  color: var(--muted-foreground);
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  max-width: 42rem;
 }
 
 .errorCard {
-  padding: 2rem;
+  padding: 3rem 2rem;
   text-align: center;
   border-radius: var(--radius);
-  border: 1px solid var(--destructive);
-  color: var(--destructive);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.05);
+  backdrop-filter: blur(16px);
 }

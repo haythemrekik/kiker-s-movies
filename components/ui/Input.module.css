@@ -1,22 +1,24 @@
 .input {
   display: flex;
-  height: 2.5rem;
+  height: 2.75rem;
   width: 100%;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background-color: var(--background);
-  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(31, 31, 31, 0.8);
+  padding: 0 1rem;
   font-size: 0.875rem;
-  color: var(--foreground);
+  color: #fff;
+  transition: all 0.2s ease;
 }
 
 .input::placeholder {
-  color: var(--muted-foreground);
+  color: rgba(255, 255, 255, 0.3);
 }
 
-.input:focus-visible {
+.input:focus {
   outline: none;
-  border-color: var(--ring);
+  border-color: #42a0b3;
+  box-shadow: 0 0 0 1px #42a0b3;
 }
 
 .input:disabled {

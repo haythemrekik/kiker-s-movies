@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, Suspense } from 'react'
+import Image from 'next/image'
 import { login, signup } from './actions'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -14,9 +15,12 @@ function LoginForm() {
 
   return (
     <div className={`glass-panel ${styles.card}`}>
-      <h1 className={`${styles.title} gradient-text`}>Kiker&apos;s movies</h1>
+      <div className={styles.logoContainer}>
+        <Image src="/logo.png" alt="OneView" width={240} height={100} className={styles.logo} priority />
+      </div>
+      <h2 className={styles.title}>{mode === 'login' ? 'Sign In' : 'Sign Up'}</h2>
       <p className={styles.subtitle}>
-        {mode === 'login' ? 'Connectez-vous à votre compte' : 'Créez votre compte gratuit'}
+        {mode === 'login' ? 'Welcome back to OneView' : 'Create your secure account'}
       </p>
 
       <div className={styles.tabs}>
@@ -42,18 +46,23 @@ function LoginForm() {
 
       <form className={styles.form}>
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="email">Email</label>
-          <Input id="email" name="email" type="email" required placeholder="vous@exemple.com" />
+          <Input id="email" name="email" type="email" required placeholder="Email address" className={styles.sleekInput} />
         </div>
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="password">Mot de passe</label>
-          <Input id="password" name="password" type="password" required placeholder="••••••••" />
+          <Input id="password" name="password" type="password" required placeholder="Password" className={styles.sleekInput} />
         </div>
+        
+        {mode === 'login' && (
+          <div className={styles.forgotPassword}>
+            <a href="#">Forgot Password</a>
+          </div>
+        )}
+
         <div className={styles.buttonGroup}>
           {mode === 'login' ? (
-            <Button formAction={login}>Se connecter</Button>
+            <Button formAction={login} className={styles.neonButton}>Sign In</Button>
           ) : (
-            <Button formAction={signup}>Créer un compte</Button>
+            <Button formAction={signup} className={styles.neonButton}>Sign Up</Button>
           )}
         </div>
       </form>

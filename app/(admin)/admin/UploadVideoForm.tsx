@@ -167,7 +167,7 @@ export function UploadVideoForm() {
             <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
               <div style={{
                 height: '100%',
-                background: 'linear-gradient(90deg, #6d28d9, #8b5cf6)',
+                background: 'linear-gradient(90deg, #42a0b3, #3b82f6)',
                 width: `${progress}%`,
                 transition: 'width 0.4s ease',
                 borderRadius: '3px'

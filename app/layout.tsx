@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
+const inter = Inter({ subsets: ['latin'] });
+
 export const metadata: Metadata = {
-  title: "Kiker's movies",
-  description: 'Premium secure video streaming platform',
+  title: "OneView",
+  description: 'Watch Once, Gone Forever',
 };
 
 export default function RootLayout({
@@ -12,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="fr" className={inter.className}>
       <body>{children}</body>
     </html>
   );

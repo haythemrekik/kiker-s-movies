@@ -2,6 +2,7 @@ import { signout } from '../(auth)/login/actions'
 import { Button } from '@/components/ui/Button'
 import styles from './layout.module.css'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -31,8 +32,10 @@ export default async function AdminLayout({
   return (
     <div>
       <header className={styles.header}>
-        <div className={`${styles.brand} gradient-text`}>
-          <Link href="/dashboard">Kiker&apos;s movies</Link>
+        <div className={styles.brand}>
+          <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center' }}>
+            <Image src="/logo.png" alt="OneView" width={140} height={50} style={{ objectFit: 'contain' }} />
+          </Link>
         </div>
         <div className={styles.nav}>
           <span style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>{user?.email}</span>
