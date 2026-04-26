@@ -3,6 +3,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { b2Client, B2_BUCKET } from '@/lib/b2/client'
+import { GetObjectCommand } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 export type AccessStatus = 'allowed' | 'code_required' | 'error' | 'not_found'
 
@@ -114,16 +117,17 @@ export async function getVideoUrl(
       .eq('video_id', videoId)
   }
 
-  // Generate 60-second signed URL
-  const { data: urlData, error: urlError } = await admin
-    .storage
-    .from('videos')
-    .createSignedUrl(video.video_path, 60)
+  // Generate 60-second signed URL from B2
+  try {
+    const command = new GetObjectCommand({
+      Bucket: B2_BUCKET,
+      Key: video.video_path,
+    })
 
-  if (urlError || !urlData) {
-    return { error: 'Impossible de générer l\'URL de la vidéo' }
+    const signedUrl = await getSignedUrl(b2Client, command, { expiresIn: 60 })
+    return { url: signedUrl }
+  } catch (urlError) {
+    console.error('Failed to generate B2 video URL:', urlError)
+    return { error: 'Impossible de générer l\'URL de la vidéo B2' }
   }
-
-
-  return { url: urlData.signedUrl }
 }

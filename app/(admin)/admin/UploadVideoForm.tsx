@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { saveVideoRecord } from './actions'
+import { getSignedUploadUrl, saveVideoRecord } from './actions'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import styles from './page.module.css'
@@ -34,30 +34,46 @@ export function UploadVideoForm() {
     setProgress(1)
 
     try {
-      const supabase = createClient()
-
-      // Generate a clean file path
-      const safeName = file.name.replace(/[^a-zA-Z0-9.\-]/g, '-').toLowerCase()
-      const path = `${Date.now()}-${safeName}`
-
-      // Use resumable upload — works for files of any size, resumes on connection drop
-      const { error: uploadError } = await supabase.storage
-        .from('videos')
-        .upload(path, file, {
-          upsert: false,
-          onUploadProgress: (progress: { loaded: number; total: number }) => {
-            const pct = Math.round((progress.loaded / progress.total) * 90)
-            setProgress(pct)
-          },
-        } as any)
-
-      if (uploadError) {
-        throw new Error(`Échec de l'envoi : ${uploadError.message}`)
+      // 1. Get Signed Upload URL for B2
+      const { signedUrl, path, error: urlError } = await getSignedUploadUrl(file.name, file.type)
+      
+      if (urlError || !signedUrl || !path) {
+        throw new Error(urlError || 'Impossible d\'obtenir l\'URL d\'upload')
       }
+
+      setProgress(5) // Got URL
+
+      // 2. Upload directly to B2 using XMLHttpRequest to track progress
+      await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            // Map 5% to 95% for the actual upload
+            const pct = 5 + Math.round((event.loaded / event.total) * 90)
+            setProgress(pct)
+          }
+        }
+        
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(true)
+          } else {
+            reject(new Error(`Échec de l'envoi HTTP: ${xhr.status} ${xhr.statusText}`))
+          }
+        }
+        
+        xhr.onerror = () => reject(new Error('Erreur réseau lors de l\'envoi'))
+        xhr.onabort = () => reject(new Error('Envoi annulé'))
+        
+        xhr.open('PUT', signedUrl, true)
+        xhr.setRequestHeader('Content-Type', file.type)
+        xhr.send(file)
+      })
 
       setProgress(95)
 
-      // Save to database
+      // 3. Save to database
       const { error: saveError } = await saveVideoRecord(title, description, path)
       
       if (saveError) {

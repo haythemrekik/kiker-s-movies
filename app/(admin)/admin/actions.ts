@@ -2,6 +2,9 @@
 
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
+import { b2Client, B2_BUCKET } from '@/lib/b2/client'
+import { PutObjectCommand } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 export async function generateCode(formData: FormData) {
   const supabaseAdmin = createAdminClient()
@@ -46,23 +49,23 @@ export async function generateCode(formData: FormData) {
 }
 
 export async function getSignedUploadUrl(fileName: string, contentType: string) {
-  const supabaseAdmin = createAdminClient()
-  
   // Clean file name: replace spaces with hyphens, remove special chars
   const safeName = fileName.replace(/[^a-zA-Z0-9.\-]/g, '-').toLowerCase()
   const path = `${Date.now()}-${safeName}`
 
-  const { data, error } = await supabaseAdmin
-    .storage
-    .from('videos')
-    .createSignedUploadUrl(path)
+  try {
+    const command = new PutObjectCommand({
+      Bucket: B2_BUCKET,
+      Key: path,
+      ContentType: contentType,
+    })
 
-  if (error || !data) {
-    console.error('Failed to create upload URL', error)
-    return { error: 'Impossible de créer l\'URL d\'upload' }
+    const signedUrl = await getSignedUrl(b2Client, command, { expiresIn: 3600 })
+    return { signedUrl, path }
+  } catch (error) {
+    console.error('Failed to create B2 upload URL', error)
+    return { error: 'Impossible de créer l\'URL d\'upload B2' }
   }
-
-  return { signedUrl: data.signedUrl, token: data.token, path }
 }
 
 export async function saveVideoRecord(title: string, description: string, path: string) {
