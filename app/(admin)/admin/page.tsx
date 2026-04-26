@@ -24,13 +24,13 @@ export default async function AdminPage() {
  
       <div className={styles.grid}>
         {/* Management & Upload Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
           <UploadVideoForm />
           <VideoList videos={videos} />
         </div>
 
         {/* Access Codes Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
           {/* Generate Code Form */}
           <div className={`glass-panel ${styles.card}`}>
             <h2 className={styles.cardTitle}>Générer un code d'accès</h2>
