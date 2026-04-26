@@ -93,6 +93,7 @@ export async function saveVideoRecord(title: string, description: string, path: 
 
   revalidatePath('/admin')
   revalidatePath('/dashboard')
+  revalidatePath('/')
   return { success: true }
 }
 
