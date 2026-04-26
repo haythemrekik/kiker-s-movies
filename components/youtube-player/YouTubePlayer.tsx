@@ -54,6 +54,11 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
             setCurrentTime(current)
             setDuration(total)
             setProgress((current / total) * 100)
+            
+            // Sauvegarder la progression
+            if (current > 2 && total - current > 2) {
+              localStorage.setItem(`yt_progress_${videoId}`, current.toString())
+            }
           }
         }
       }, 500)
@@ -123,6 +128,15 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
           setDuration(event.target.getDuration())
           setVolume(event.target.getVolume())
           setIsMuted(event.target.isMuted())
+          
+          // Restaurer la progression
+          const savedProgress = localStorage.getItem(`yt_progress_${videoId}`)
+          if (savedProgress) {
+            const time = parseFloat(savedProgress)
+            lastTimeRef.current = time
+            event.target.seekTo(time, true)
+          }
+          
           event.target.playVideo()
         },
         onStateChange: (event: any) => {
@@ -145,6 +159,8 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
 
   const handleEnded = async () => {
     setEnded(true)
+    localStorage.removeItem(`yt_progress_${videoId}`)
+    
     if (playerRef.current) {
       playerRef.current.destroy()
       playerRef.current = null
