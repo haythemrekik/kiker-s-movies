@@ -18,30 +18,24 @@ export default async function AdminPage() {
 
   return (
     <div className={styles.container}>
-      <div>
-        <h1 className={styles.title}>Tableau de bord Administrateur</h1>
-      </div>
- 
+      <h1 className={styles.title}>Tableau de bord Administrateur</h1>
+
       <div className={styles.grid}>
         {/* Management & Upload Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
+        <div className={styles.column}>
           <UploadVideoForm />
           <VideoList videos={videos} />
         </div>
 
         {/* Access Codes Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
+        <div className={styles.column}>
           {/* Generate Code Form */}
           <div className={`glass-panel ${styles.card}`}>
             <h2 className={styles.cardTitle}>Générer un code d'accès</h2>
             <form action={generateCode} className={styles.form}>
               <div className={styles.formGroup}>
                 <label className={styles.label}>Vidéo</label>
-                <select 
-                  name="videoId" 
-                  required 
-                  className={styles.select}
-                >
+                <select name="videoId" required className={styles.select}>
                   <option value="">Sélectionner une vidéo</option>
                   {videos?.map(v => (
                     <option key={v.id} value={v.id}>{v.title}</option>
@@ -59,7 +53,7 @@ export default async function AdminPage() {
               <Button type="submit">Générer le code</Button>
             </form>
           </div>
-  
+
           {/* List of Codes */}
           <div className={`glass-panel ${styles.card}`}>
             <h2 className={styles.cardTitle}>Codes d'accès récents</h2>
@@ -77,7 +71,7 @@ export default async function AdminPage() {
                     <tr key={code.id}>
                       <td className={`${styles.td} ${styles.tdMono}`}>{code.code}</td>
                       <td className={`${styles.td} ${styles.tdTruncate}`}>
-                        {/* @ts-ignore - Join typing */}
+                        {/* @ts-ignore */}
                         {code.videos?.title || 'Inconnu'}
                       </td>
                       <td className={styles.td}>
@@ -92,7 +86,7 @@ export default async function AdminPage() {
                   {(!codes || codes.length === 0) && (
                     <tr>
                       <td colSpan={3} className={styles.td} style={{ textAlign: 'center' }}>
-                        Aucun code généré pour le moment.
+                        Aucun code généré.
                       </td>
                     </tr>
                   )}
@@ -105,5 +99,3 @@ export default async function AdminPage() {
     </div>
   )
 }
-
-

@@ -63,7 +63,7 @@ export function VideoList({ videos }: { videos: Video[] | null }) {
           <tbody>
             {videos?.map(video => (
               <tr key={video.id}>
-                <td className={styles.td}>
+                <td className={styles.td} style={{ whiteSpace: 'nowrap', maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {editingId === video.id ? (
                     <Input 
                       value={editTitle} 
@@ -74,11 +74,11 @@ export function VideoList({ videos }: { videos: Video[] | null }) {
                     video.title
                   )}
                 </td>
-                <td className={`${styles.td} ${styles.tdTruncate}`}>
+                <td className={styles.td} style={{ maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {editingId === video.id ? (
                     <textarea 
                       className={styles.select} 
-                      style={{ minHeight: '60px', padding: '0.5rem', resize: 'vertical' }}
+                      style={{ minHeight: '60px', padding: '0.4rem', resize: 'vertical', width: '100%', boxSizing: 'border-box' }}
                       value={editDesc} 
                       onChange={e => setEditDesc(e.target.value)} 
                       placeholder="Description"
@@ -87,8 +87,8 @@ export function VideoList({ videos }: { videos: Video[] | null }) {
                     video.description || '-'
                   )}
                 </td>
-                <td className={styles.td}>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <td className={styles.td} style={{ whiteSpace: 'nowrap' }}>
+                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                     {editingId === video.id ? (
                       <>
                         <Button size="sm" onClick={() => handleUpdate(video.id)} disabled={isUpdating}>
@@ -104,7 +104,7 @@ export function VideoList({ videos }: { videos: Video[] | null }) {
                           Modifier
                         </Button>
                         <Button size="sm" variant="destructive" onClick={() => handleDelete(video.id, video.video_path)}>
-                          Supprimer
+                          Sup.
                         </Button>
                       </>
                     )}

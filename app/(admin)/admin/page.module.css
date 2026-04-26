@@ -1,95 +1,76 @@
+/* ===== BASE (Mobile First) ===== */
 .container {
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
-  width: 100%;
+  gap: 1.25rem;
+  box-sizing: border-box;
   overflow-x: hidden;
 }
 
-@media (max-width: 640px) {
-  .container {
-    padding: 1rem;
-    gap: 1.5rem;
-  }
-}
-
 .title {
-  font-size: 2.25rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 2rem;
   color: #fff;
   letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
 }
 
-@media (max-width: 640px) {
-  .title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-}
-
+/* Mobile: single column stack */
 .grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
   width: 100%;
 }
 
-@media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: 1.2fr 0.8fr;
-  }
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .card {
-  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
   border-radius: var(--radius);
   background: rgba(15, 15, 15, 0.4);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(66, 160, 179, 0.15);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  width: 100%;
   overflow: hidden;
 }
 
-@media (max-width: 640px) {
-  .card {
-    padding: 1.25rem;
-  }
-}
-
 .cardTitle {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #fff;
-}
-
-@media (max-width: 640px) {
-  .cardTitle {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-  }
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+  width: 100%;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  width: 100%;
 }
 
 .label {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
   display: block;
@@ -97,8 +78,9 @@
 
 .select {
   width: 100%;
-  height: 2.75rem;
-  padding: 0 1rem;
+  min-width: 0;
+  height: 2.5rem;
+  padding: 0 0.75rem;
   border-radius: var(--radius);
   border: 1px solid rgba(255, 255, 255, 0.1);
   background-color: rgba(31, 31, 31, 0.8);
@@ -107,8 +89,9 @@
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 1rem center;
+  background-position: right 0.75rem center;
   background-size: 1rem;
+  box-sizing: border-box;
 }
 
 .select:focus {
@@ -116,24 +99,26 @@
   border-color: #42a0b3;
 }
 
+/* Table wrapper: only the table scrolls, not the page */
 .tableContainer {
-  overflow-x: auto;
-  margin-top: 0.5rem;
   width: 100%;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius);
 }
 
 .table {
+  min-width: 400px; /* ensures columns don't collapse but table scrolls */
   width: 100%;
   text-align: left;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   border-collapse: collapse;
 }
 
 .th {
-  padding: 1rem;
+  padding: 0.6rem 0.75rem;
   text-transform: uppercase;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   color: rgba(255, 255, 255, 0.4);
@@ -142,33 +127,23 @@
 }
 
 .td {
-  padding: 1rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.8);
-}
-
-@media (max-width: 640px) {
-  .th, .td {
-    padding: 0.75rem 0.5rem;
-  }
+  max-width: 0; /* needed for ellipsis to work in table cells */
 }
 
 .tdMono {
   font-family: 'Roboto Mono', monospace;
   color: #42a0b3;
+  font-size: 0.75rem;
 }
 
 .tdTruncate {
-  max-width: 180px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@media (max-width: 640px) {
-  .tdTruncate {
-    max-width: 100px;
-  }
+  max-width: 120px;
 }
 
 .textDestructive {
@@ -181,3 +156,58 @@
   font-weight: 600;
 }
 
+/* ===== TABLET (768px+) ===== */
+@media (min-width: 768px) {
+  .container {
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+
+  .title {
+    font-size: 1.875rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .cardTitle {
+    font-size: 1.25rem;
+  }
+
+  .table {
+    min-width: unset;
+  }
+}
+
+/* ===== DESKTOP (1024px+) ===== */
+@media (min-width: 1024px) {
+  .container {
+    padding: 2rem;
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  .title {
+    font-size: 2.25rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+
+  .cardTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tdTruncate {
+    max-width: 180px;
+  }
+}
