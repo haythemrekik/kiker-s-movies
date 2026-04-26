@@ -111,11 +111,12 @@ export function UploadVideoForm() {
         </div>
       )}
 
-      <form onSubmit={handleUpload} className={styles.form}>
+      <div className={styles.form}>
         <div className={styles.formGroup}>
           <label className={styles.label}>Titre *</label>
           <Input 
             required 
+            id="videoTitle"
             value={title} 
             onChange={e => setTitle(e.target.value)} 
             placeholder="ex: Inception" 
@@ -127,6 +128,7 @@ export function UploadVideoForm() {
           <label className={styles.label}>Description</label>
           <textarea 
             className={styles.select} 
+            id="videoDesc"
             style={{ minHeight: '80px', padding: '0.5rem', resize: 'vertical' }}
             value={description} 
             onChange={e => setDescription(e.target.value)} 
@@ -179,10 +181,10 @@ export function UploadVideoForm() {
           </div>
         )}
 
-        <Button type="submit" disabled={isUploading}>
+        <Button type="button" onClick={handleUpload} disabled={isUploading}>
           {isUploading ? `Envoi en cours... ${progress}%` : 'Ajouter la vidéo'}
         </Button>
-      </form>
+      </div>
     </div>
   )
 }
