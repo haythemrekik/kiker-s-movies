@@ -49,6 +49,9 @@ export async function generateCode(formData: FormData) {
 }
 
 export async function getSignedUploadUrl(fileName: string, contentType: string) {
+  console.log('--- getSignedUploadUrl called ---')
+  console.log('B2_BUCKET:', B2_BUCKET)
+  
   // Clean file name: replace spaces with hyphens, remove special chars
   const safeName = fileName.replace(/[^a-zA-Z0-9.\-]/g, '-').toLowerCase()
   const path = `${Date.now()}-${safeName}`
@@ -61,10 +64,11 @@ export async function getSignedUploadUrl(fileName: string, contentType: string) 
     })
 
     const signedUrl = await getSignedUrl(b2Client, command, { expiresIn: 3600 })
+    console.log('Successfully generated signed URL')
     return { signedUrl, path }
   } catch (error: any) {
-    console.error('B2 upload URL error:', error.message)
-    return { error: 'Impossible de créer l\'URL d\'upload B2' }
+    console.error('B2 upload URL error:', error.message, error.stack)
+    return { error: 'Impossible de créer l\'URL d\'upload B2: ' + error.message }
   }
 }
 

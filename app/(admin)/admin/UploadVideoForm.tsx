@@ -24,7 +24,10 @@ export function UploadVideoForm() {
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!file || !title) {
+    const fileInput = document.getElementById('videoFile') as HTMLInputElement
+    const actualFile = file || fileInput?.files?.[0]
+
+    if (!actualFile || !title) {
       setMessage({ type: 'error', text: 'Veuillez fournir un titre et un fichier vidéo.' })
       return
     }
@@ -35,7 +38,7 @@ export function UploadVideoForm() {
 
     try {
       // 1. Get Signed Upload URL for B2
-      const { signedUrl, path, error: urlError } = await getSignedUploadUrl(file.name, file.type)
+      const { signedUrl, path, error: urlError } = await getSignedUploadUrl(actualFile.name, actualFile.type)
       
       if (urlError || !signedUrl || !path) {
         throw new Error(urlError || 'Impossible d\'obtenir l\'URL d\'upload')
@@ -67,8 +70,8 @@ export function UploadVideoForm() {
         xhr.onabort = () => reject(new Error('Envoi annulé'))
         
         xhr.open('PUT', signedUrl, true)
-        xhr.setRequestHeader('Content-Type', file.type)
-        xhr.send(file)
+        xhr.setRequestHeader('Content-Type', actualFile.type)
+        xhr.send(actualFile)
       })
 
       setProgress(95)
@@ -176,7 +179,7 @@ export function UploadVideoForm() {
           </div>
         )}
 
-        <Button type="submit" disabled={isUploading || !file || !title}>
+        <Button type="submit" disabled={isUploading}>
           {isUploading ? `Envoi en cours... ${progress}%` : 'Ajouter la vidéo'}
         </Button>
       </form>
