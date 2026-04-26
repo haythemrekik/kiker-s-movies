@@ -27,11 +27,11 @@ export default async function DashboardLayout({
       <header className={styles.header}>
         <div className={styles.brand}>
           <Link href="/dashboard">
-            <Image src="/logo.png" alt="OneView" width={180} height={64} className={styles.logo} />
+            <Image src="/logo.png" alt="OneView" width={120} height={40} className={styles.logo} />
           </Link>
         </div>
         <div className={styles.nav}>
-          <span className="text-sm text-muted-foreground">{user?.email}</span>
+          <span className="text-sm text-muted-foreground" style={{ display: 'var(--show-email, block)' }}>{user?.email}</span>
           {isAdmin && (
             <Link href="/admin">
               <Button variant="ghost" size="sm">Admin</Button>

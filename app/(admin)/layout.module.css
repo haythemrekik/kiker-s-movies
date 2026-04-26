@@ -2,8 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 2rem;
-  margin: 1.5rem auto;
+  padding: 0.5rem 1.5rem;
+  margin: 1rem auto;
   max-width: 1200px;
   width: calc(100% - 3rem);
   border-radius: 100px;
@@ -20,12 +20,12 @@
 
 @media (max-width: 640px) {
   .header {
-    margin: 1rem auto;
-    width: calc(100% - 2rem);
-    padding: 0.75rem 1.5rem;
-    flex-direction: column;
-    gap: 0.75rem;
-    border-radius: 20px; /* Less rounded on mobile because it stacks */
+    margin: 0.5rem auto;
+    width: calc(100% - 1rem);
+    padding: 0.5rem 1rem;
+    flex-direction: row;
+    gap: 0.5rem;
+    border-radius: 100px; /* Keep pill shape on mobile */
     align-items: center;
   }
 }
@@ -43,7 +43,7 @@
 
 @media (max-width: 640px) {
   .logo {
-    width: 120px;
+    width: 100px;
   }
 }
 
@@ -55,9 +55,13 @@
 
 @media (max-width: 640px) {
   .nav {
-    width: 100%;
-    justify-content: center;
+    width: auto;
+    justify-content: flex-end;
     gap: 0.5rem;
+  }
+  
+  :global {
+    --show-email: none;
   }
 }
 

@@ -34,11 +34,11 @@ export default async function AdminLayout({
       <header className={styles.header}>
         <div className={styles.brand}>
           <Link href="/dashboard">
-            <Image src="/logo.png" alt="OneView" width={180} height={64} className={styles.logo} />
+            <Image src="/logo.png" alt="OneView" width={120} height={40} className={styles.logo} />
           </Link>
         </div>
         <div className={styles.nav}>
-          <span style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>{user?.email}</span>
+          <span style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', display: 'var(--show-email, block)' }}>{user?.email}</span>
           <Link href="/dashboard">
             <Button variant="ghost" size="sm">Tableau de bord</Button>
           </Link>
