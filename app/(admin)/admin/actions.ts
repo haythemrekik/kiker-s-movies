@@ -62,8 +62,8 @@ export async function getSignedUploadUrl(fileName: string, contentType: string) 
 
     const signedUrl = await getSignedUrl(b2Client, command, { expiresIn: 3600 })
     return { signedUrl, path }
-  } catch (error) {
-    console.error('Failed to create B2 upload URL', error)
+  } catch (error: any) {
+    console.error('B2 upload URL error:', error.message)
     return { error: 'Impossible de créer l\'URL d\'upload B2' }
   }
 }
