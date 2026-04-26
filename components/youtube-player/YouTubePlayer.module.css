@@ -22,43 +22,146 @@
 .player {
   width: 100%;
   height: 100%;
+  pointer-events: none; /* YouTube Iframe will be completely unclickable natively */
 }
 
-/* Main overlay covers everything except the bottom control bar */
-.mainBlocker {
+/* Clickable overlay to toggle play/pause via API */
+.clickOverlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
-  bottom: 55px; /* Leave exactly 55px for the YouTube timeline and play controls */
+  height: 100%;
   background: transparent;
-  z-index: 8;
+  z-index: 10;
   cursor: pointer;
 }
 
-/* Blocks clicks on the top right Share/Watch Later buttons */
-.shareBlocker {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 120px;
-  height: 80px;
-  background: transparent;
-  z-index: 10;
-}
-
-/* Blocks clicks on the YouTube watermark and logo, but leaves full-screen accessible */
-.logoBlocker {
+/* --- CUSTOM CONTROLS --- */
+.controlsWrapper {
   position: absolute;
   bottom: 0;
-  right: 50px; /* Décalé de 50px pour laisser le bouton plein écran cliquable */
-  width: 150px; 
-  height: 130px; /* Hauteur augmentée pour couvrir le filigrane au-dessus de la barre */
-  background: transparent;
-  z-index: 10;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 1rem 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
+.container:hover .controlsWrapper, .controlsActive {
+  opacity: 1;
+}
 
+/* Timeline */
+.timelineContainer {
+  width: 100%;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.timelineTrack {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  position: relative;
+  transition: height 0.1s ease;
+}
+
+.timelineContainer:hover .timelineTrack {
+  height: 6px;
+}
+
+.timelineProgress {
+  height: 100%;
+  background: #42a0b3;
+  border-radius: 2px;
+  position: relative;
+}
+
+.timelineThumb {
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.1s ease;
+}
+
+.timelineContainer:hover .timelineThumb {
+  transform: translateY(-50%) scale(1);
+}
+
+/* Buttons and Info */
+.controlsBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.leftControls, .rightControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.controlButton {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.controlButton:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.timeDisplay {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+.volumeContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.volumeSlider {
+  width: 0;
+  opacity: 0;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  accent-color: #fff;
+  cursor: pointer;
+}
+
+.volumeContainer:hover .volumeSlider, .volumeSlider:focus {
+  width: 60px;
+  opacity: 1;
+}
+
+/* Misc */
 .loader {
   position: absolute;
   inset: 0;
