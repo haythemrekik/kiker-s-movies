@@ -12,10 +12,40 @@
   overflow: hidden;
 }
 
+.playerWrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .player {
   width: 100%;
   height: 100%;
 }
+
+/* Blocks clicks on the top title and share buttons */
+.topBlocker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: transparent;
+  z-index: 8;
+}
+
+/* Blocks clicks on the bottom right YouTube logo */
+.logoBlocker {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 120px;
+  height: 50px;
+  background: transparent;
+  z-index: 8;
+}
+
 
 .loader {
   position: absolute;
