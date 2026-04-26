@@ -250,9 +250,11 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
       {/* Invisible overlay over the entire video to capture play/pause clicks and block right-clicks to iframe */}
       <div className={styles.clickOverlay} onClick={togglePlay} />
 
-      <div className={styles.watermark}>
-        {watermarkElements}
-      </div>
+      {!isFullscreen && (
+        <div className={styles.watermark}>
+          {watermarkElements}
+        </div>
+      )}
 
       {/* Custom Control Bar */}
       {!loading && (
