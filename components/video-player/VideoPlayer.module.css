@@ -4,7 +4,6 @@
   max-width: 1000px;
   margin: 0 auto;
   border-radius: var(--radius);
-  overflow: hidden;
   background-color: #000;
   aspect-ratio: 16 / 9;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -34,6 +33,28 @@
   z-index: 10;
   user-select: none;
   overflow: hidden;
+  border-radius: var(--radius);
+}
+
+/* Screen capture protection overlay */
+.protectionOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border-radius: var(--radius);
+}
+
+.protectionOverlay p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  text-align: center;
+  padding: 0 2rem;
 }
 
 .watermarkRow {
