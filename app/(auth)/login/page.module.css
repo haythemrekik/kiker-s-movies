@@ -23,10 +23,13 @@
 .logoContainer {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
 .logo {
+  height: auto;
+  max-width: 100%;
   object-fit: contain;
 }
 

@@ -16,7 +16,7 @@ function LoginForm() {
   return (
     <div className={`glass-panel ${styles.card}`}>
       <div className={styles.logoContainer}>
-        <Image src="/logo.png" alt="OneView" width={240} height={100} className={styles.logo} priority />
+        <Image src="/logo.png" alt="OneView" width={320} height={120} className={styles.logo} priority />
       </div>
       <h2 className={styles.title}>{mode === 'login' ? 'Sign In' : 'Sign Up'}</h2>
       <p className={styles.subtitle}>

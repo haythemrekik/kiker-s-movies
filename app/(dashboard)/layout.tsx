@@ -26,8 +26,8 @@ export default async function DashboardLayout({
     <div>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center' }}>
-            <Image src="/logo.png" alt="OneView" width={140} height={50} style={{ objectFit: 'contain' }} />
+          <Link href="/dashboard">
+            <Image src="/logo.png" alt="OneView" width={180} height={64} className={styles.logo} />
           </Link>
         </div>
         <div className={styles.nav}>
