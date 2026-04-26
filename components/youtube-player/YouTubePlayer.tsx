@@ -118,10 +118,18 @@ export function YouTubePlayer({ videoId, youtubeVideoId, email }: YouTubePlayerP
         <div ref={containerRef} className={styles.player} />
         
         {/* Anti-Click Overlays to hide/block YouTube UI elements */}
-        {/* Top overlay blocks Title, Watch Later, and Share buttons */}
-        <div className={styles.topBlocker} />
+        {/* Main overlay covers everything except the bottom control bar to block right-clicks everywhere */}
+        <div 
+          className={styles.mainBlocker} 
+          onClick={() => {
+            if (!playerRef.current) return
+            const state = playerRef.current.getPlayerState()
+            if (state === 1) playerRef.current.pauseVideo() // 1 = playing
+            else playerRef.current.playVideo()
+          }}
+        />
         
-        {/* Bottom right overlay blocks the YouTube logo watermark */}
+        {/* Bottom right overlay blocks the YouTube logo watermark in the control bar */}
         <div className={styles.logoBlocker} />
       </div>
 
