@@ -93,7 +93,7 @@ export async function generateCode(formData: FormData) {
     expiresAt = date.toISOString()
   }
 
-  const { error } = await supabase.from('access_codes').insert({
+  const { error } = await (supabase.from('access_codes') as any).insert({
     code,
     video_id: videoId,
     user_id: userId || null,
