@@ -6,6 +6,8 @@ CREATE TABLE public.videos (
     title TEXT NOT NULL,
     description TEXT,
     video_path TEXT NOT NULL,
+    owner_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    target_client_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -35,10 +37,26 @@ ALTER TABLE public.access_codes ENABLE ROW LEVEL SECURITY;
 
 -- 3. RLS Policies
 
--- Videos: Everyone authenticated can view the list of videos
-CREATE POLICY "Authenticated users can view videos" 
+-- Videos: Createurs can see and manage their own videos, Clients can see videos assigned to them
+CREATE POLICY "Createurs can see their own videos" 
     ON public.videos FOR SELECT 
-    USING (auth.role() = 'authenticated');
+    USING (auth.uid() = owner_id);
+
+CREATE POLICY "Clients can see videos assigned to them" 
+    ON public.videos FOR SELECT 
+    USING (auth.uid() = target_client_id);
+
+CREATE POLICY "Createurs can insert their own videos" 
+    ON public.videos FOR INSERT 
+    WITH CHECK (auth.uid() = owner_id);
+
+CREATE POLICY "Createurs can update their own videos" 
+    ON public.videos FOR UPDATE 
+    USING (auth.uid() = owner_id);
+
+CREATE POLICY "Createurs can delete their own videos" 
+    ON public.videos FOR DELETE 
+    USING (auth.uid() = owner_id);
 
 -- Video Views: Users can only see and update their own views
 CREATE POLICY "Users can view their own video views" 
@@ -114,7 +132,7 @@ $$;
 CREATE TABLE public.user_roles (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE,
-    role TEXT NOT NULL CHECK (role IN ('admin', 'user')) DEFAULT 'user',
+    role TEXT NOT NULL CHECK (role IN ('admin', 'user', 'createur', 'client')) DEFAULT 'user',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

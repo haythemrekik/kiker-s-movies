@@ -32,6 +32,19 @@ export default async function DashboardLayout({
         </div>
         <div className={styles.nav}>
           <span className={`text-sm text-muted-foreground ${styles.navEmail}`}>{user?.email}</span>
+          
+          {(roleData?.role === 'createur' || isAdmin) && (
+            <Link href="/createur">
+              <Button variant="ghost" size="sm">Créateur</Button>
+            </Link>
+          )}
+
+          {(roleData?.role === 'client' || isAdmin) && (
+            <Link href="/client">
+              <Button variant="ghost" size="sm">Client</Button>
+            </Link>
+          )}
+
           {isAdmin && (
             <Link href="/admin">
               <Button variant="ghost" size="sm">Admin</Button>

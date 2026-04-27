@@ -3,6 +3,7 @@ import styles from './page.module.css'
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
 import { Database } from '@/types/database.types'
+import { redirect } from 'next/navigation'
 
 type Video = Database['public']['Tables']['videos']['Row']
 type VideoView = Database['public']['Tables']['video_views']['Row']
@@ -11,6 +12,19 @@ export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const { data: roleData } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', user?.id || '')
+    .maybeSingle() as any
+
+  if (roleData?.role === 'createur') {
+    redirect('/createur')
+  } else if (roleData?.role === 'client') {
+    redirect('/client')
+  }
   
   const { data: videosData } = await supabase
     .from('videos')
