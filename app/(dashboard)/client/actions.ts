@@ -23,15 +23,17 @@ export async function unlockCode(formData: FormData) {
     return { error: 'Code invalide ou introuvable' }
   }
 
-  if (accessCode.is_used) {
+  const codeData = accessCode as any
+
+  if (codeData.is_used) {
     return { error: 'Ce code a déjà été utilisé' }
   }
 
-  if (accessCode.expires_at && new Date(accessCode.expires_at) < new Date()) {
+  if (codeData.expires_at && new Date(codeData.expires_at) < new Date()) {
     return { error: 'Ce code a expiré' }
   }
 
-  if (accessCode.user_id && accessCode.user_id !== user.id) {
+  if (codeData.user_id && codeData.user_id !== user.id) {
     return { error: 'Ce code ne vous est pas destiné' }
   }
 
@@ -40,7 +42,7 @@ export async function unlockCode(formData: FormData) {
   const { data: success, error: redeemError } = await supabase.rpc('redeem_access_code', {
     p_code: code,
     p_user_id: user.id,
-    p_video_id: accessCode.video_id
+    p_video_id: codeData.video_id
   })
 
   if (redeemError || !success) {
