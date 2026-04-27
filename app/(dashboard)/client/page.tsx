@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { UnlockForm } from './UnlockForm'
 import styles from '@/app/(dashboard)/dashboard/page.module.css'
 import Link from 'next/link'
@@ -15,8 +16,11 @@ export default async function ClientDashboard() {
     redirect('/login')
   }
 
+  // Use admin client to bypass RLS issues on the joined videos table
+  const admin = createAdminClient()
+  
   // Get user's unlocked videos from video_views
-  const { data: viewsData } = await supabase
+  const { data: viewsData } = await admin
     .from('video_views')
     .select('watch_count, last_watched_at, videos(*)')
     .eq('user_id', user.id)
