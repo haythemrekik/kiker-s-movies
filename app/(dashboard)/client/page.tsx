@@ -33,7 +33,7 @@ export default async function ClientDashboard() {
             Espace <span className={styles.heroAccent}>Client.</span>
           </h1>
           <p className={styles.heroSubtitle}>
-            Consultez les vidéos qui vous ont été livrées par vos créateurs.
+            Entrez votre code d&apos;accès pour visionner les vidéos livrées par vos créateurs. Chaque visionnage est unique et protégé.
           </p>
         </div>
       </section>

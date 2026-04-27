@@ -10,6 +10,7 @@ import { useSearchParams } from 'next/navigation'
 
 function LoginForm() {
   const [mode, setMode] = useState<'login' | 'signup'>('login')
+  const [role, setRole] = useState<'createur' | 'client'>('client')
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
 
@@ -18,9 +19,12 @@ function LoginForm() {
       <div className={styles.logoContainer}>
         <Image src="/logo12.png" alt="OneView" width={320} height={120} className={styles.logo} priority />
       </div>
-      <h2 className={styles.title}>{mode === 'login' ? 'Sign In' : 'Sign Up'}</h2>
+      <p className={styles.tagline}>La marketplace vidéo sécurisée</p>
+      <h2 className={styles.title}>{mode === 'login' ? 'Connexion' : 'Créer un compte'}</h2>
       <p className={styles.subtitle}>
-        {mode === 'login' ? 'Welcome back to OneView' : 'Create your secure account'}
+        {mode === 'login' 
+          ? 'Accédez à votre espace créateur ou client' 
+          : 'Rejoignez la plateforme en tant que créateur ou client'}
       </p>
 
       <div className={styles.tabs}>
@@ -46,23 +50,50 @@ function LoginForm() {
 
       <form className={styles.form}>
         <div className={styles.formGroup}>
-          <Input id="email" name="email" type="email" required placeholder="Email address" className={styles.sleekInput} />
+          <Input id="email" name="email" type="email" required placeholder="Adresse email" className={styles.sleekInput} />
         </div>
         <div className={styles.formGroup}>
-          <Input id="password" name="password" type="password" required placeholder="Password" className={styles.sleekInput} />
+          <Input id="password" name="password" type="password" required placeholder="Mot de passe" className={styles.sleekInput} />
         </div>
+
+        {mode === 'signup' && (
+          <>
+            <label className={styles.roleLabel}>Je suis :</label>
+            <div className={styles.roleSelector}>
+              <button
+                type="button"
+                className={`${styles.roleCard} ${role === 'createur' ? styles.roleCardActive : ''}`}
+                onClick={() => setRole('createur')}
+              >
+                <span className={styles.roleIcon}>🎬</span>
+                <span className={styles.roleName}>Créateur</span>
+                <span className={styles.roleDesc}>J&apos;envoie mes vidéos à mes clients</span>
+              </button>
+              <button
+                type="button"
+                className={`${styles.roleCard} ${role === 'client' ? styles.roleCardActive : ''}`}
+                onClick={() => setRole('client')}
+              >
+                <span className={styles.roleIcon}>👁️</span>
+                <span className={styles.roleName}>Client</span>
+                <span className={styles.roleDesc}>Je visionne les vidéos de mes créateurs</span>
+              </button>
+            </div>
+            <input type="hidden" name="role" value={role} />
+          </>
+        )}
         
         {mode === 'login' && (
           <div className={styles.forgotPassword}>
-            <a href="#">Forgot Password</a>
+            <a href="#">Mot de passe oublié ?</a>
           </div>
         )}
 
         <div className={styles.buttonGroup}>
           {mode === 'login' ? (
-            <Button formAction={login} className={styles.neonButton}>Sign In</Button>
+            <Button formAction={login} className={styles.neonButton}>Se connecter</Button>
           ) : (
-            <Button formAction={signup} className={styles.neonButton}>Sign Up</Button>
+            <Button formAction={signup} className={styles.neonButton}>Créer mon compte</Button>
           )}
         </div>
       </form>
@@ -79,4 +110,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

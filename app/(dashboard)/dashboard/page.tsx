@@ -57,25 +57,25 @@ export default async function DashboardPage() {
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>
             <span className={styles.heroBadgeDot} />
-            Plateforme Exclusive
+            Marketplace Vidéo
           </div>
           <h1 className={styles.heroTitle}>
-            Votre cinéma<br />
-            <span className={styles.heroAccent}>privé, en ligne.</span>
+            Livrez vos créations<br />
+            <span className={styles.heroAccent}>en toute sécurité.</span>
           </h1>
           <p className={styles.heroSubtitle}>
-            Accédez à votre collection de films avec un code d&apos;accès personnel.<br className={styles.heroBr} />
-            Chaque visionnage, une expérience unique.
+            Échangez des vidéos entre créateurs et clients via des codes d&apos;accès uniques.<br className={styles.heroBr} />
+            Chaque visionnage est protégé et garanti unique.
           </p>
           <div className={styles.heroStats}>
             <div className={styles.heroStat}>
               <span className={styles.heroStatNumber}>{totalVideos}</span>
-              <span className={styles.heroStatLabel}>Films disponibles</span>
+              <span className={styles.heroStatLabel}>Vidéos sur la plateforme</span>
             </div>
             <div className={styles.heroStatDivider} />
             <div className={styles.heroStat}>
               <span className={styles.heroStatNumber}>{readyToWatch}</span>
-              <span className={styles.heroStatLabel}>Prêts à regarder</span>
+              <span className={styles.heroStatLabel}>Prêtes à visionner</span>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default async function DashboardPage() {
       {/* ── FILMS ── */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Catalogue</h2>
+          <h2 className={styles.sectionTitle}>Vidéos Disponibles</h2>
           <div className={styles.sectionLine} />
         </div>
 
