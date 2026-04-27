@@ -32,6 +32,12 @@ export function UploadVideoForm() {
       return
     }
 
+    const MAX_SIZE_MB = 300
+    if (actualFile.size > MAX_SIZE_MB * 1024 * 1024) {
+      setMessage({ type: 'error', text: `La taille de la vidéo dépasse la limite temporaire de ${MAX_SIZE_MB} Mo pour la phase de test.` })
+      return
+    }
+
     setIsUploading(true)
     setMessage(null)
     setProgress(1)
