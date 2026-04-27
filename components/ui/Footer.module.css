@@ -37,13 +37,9 @@
   }
 }
 
-.logoText {
-  font-size: 1.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #42a0b3 0%, #3b82f6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
+.logo {
+  object-fit: contain;
+  margin-bottom: 0.25rem;
 }
 
 .tagline {

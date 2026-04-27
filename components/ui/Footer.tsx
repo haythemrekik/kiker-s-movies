@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import styles from './Footer.module.css'
 
 export function Footer() {
@@ -9,7 +10,13 @@ export function Footer() {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.brand}>
-            <span className={styles.logoText}>OneView</span>
+            <Image 
+              src="/logo12.png" 
+              alt="OneView" 
+              width={120} 
+              height={40} 
+              className={styles.logo} 
+            />
             <p className={styles.tagline}>La marketplace vidéo sécurisée</p>
           </div>
           
