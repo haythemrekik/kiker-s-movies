@@ -12,14 +12,48 @@ export const dynamic = 'force-dynamic'
 export default async function AdminPage() {
   const supabaseAdmin = createAdminClient()
 
-  const [{ data: videos }, { data: codes }] = await Promise.all([
+  const [{ data: videos }, { data: codes }, { data: roles }, { count: volumeVisionnage }] = await Promise.all([
     supabaseAdmin.from('videos').select('*').order('created_at', { ascending: false }),
-    supabaseAdmin.from('access_codes').select('*, videos(title)').order('created_at', { ascending: false })
+    supabaseAdmin.from('access_codes').select('*, videos(title)').order('created_at', { ascending: false }),
+    supabaseAdmin.from('user_roles').select('role'),
+    supabaseAdmin.from('video_views').select('*', { count: 'exact', head: true })
   ])
+
+  // Calculate stats
+  const totalUsers = roles?.length || 0
+  const clientsCount = roles?.filter(r => r.role === 'client').length || 0
+  const createursCount = roles?.filter(r => r.role === 'createur').length || 0
+  
+  const totalVideos = videos?.length || 0
+  
+  const codesInCirculation = codes?.filter(c => !c.is_used).length || 0
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Tableau de bord Administrateur</h1>
+
+      <div className={styles.statsGrid}>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Total Utilisateurs</span>
+          <span className={styles.statValue}>{totalUsers}</span>
+          <span className={styles.statSubtext}>{clientsCount} Clients / {createursCount} Créateurs</span>
+        </div>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Vidéos Hébergées</span>
+          <span className={styles.statValue}>{totalVideos}</span>
+          <span className={styles.statSubtext}>Contenus disponibles</span>
+        </div>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Codes en Circulation</span>
+          <span className={styles.statValue}>{codesInCirculation}</span>
+          <span className={styles.statSubtext}>Actifs et non utilisés</span>
+        </div>
+        <div className={styles.statCard}>
+          <span className={styles.statLabel}>Volume de Visionnage</span>
+          <span className={styles.statValue}>{volumeVisionnage || 0}</span>
+          <span className={styles.statSubtext}>Vidéos débloquées au total</span>
+        </div>
+      </div>
 
       <div className={styles.grid}>
         {/* Management & Upload Section */}
