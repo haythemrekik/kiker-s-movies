@@ -40,6 +40,8 @@
 .logo {
   object-fit: contain;
   margin-bottom: 0.25rem;
+  max-width: 100%;
+  height: auto;
 }
 
 .tagline {
