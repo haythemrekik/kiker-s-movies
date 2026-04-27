@@ -28,8 +28,8 @@ export default async function CreateurDashboard() {
   // }
 
   const [{ data: videos }, { data: codes }] = await Promise.all([
-    supabase.from('videos').select('*').eq('owner_id', user.id).order('created_at', { ascending: false }),
-    supabase.from('access_codes').select('*, videos!inner(title, owner_id)').eq('videos.owner_id', user.id).order('created_at', { ascending: false })
+    (supabase.from('videos').select('*').eq('owner_id', user.id).order('created_at', { ascending: false }) as any),
+    (supabase.from('access_codes').select('*, videos!inner(title, owner_id)').eq('videos.owner_id', user.id).order('created_at', { ascending: false }) as any)
   ])
 
   return (

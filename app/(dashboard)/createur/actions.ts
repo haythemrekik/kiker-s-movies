@@ -36,7 +36,7 @@ export async function saveVideoRecord(title: string, description: string, path: 
     return { error: 'Non autorisé' }
   }
 
-  const { error } = await supabase.from('videos').insert({
+  const { error } = await (supabase.from('videos') as any).insert({
     title,
     description: description || null,
     video_path: path,
@@ -67,11 +67,11 @@ export async function generateCode(formData: FormData) {
   }
 
   // Verify the video belongs to this creator
-  const { data: video } = await supabase
+  const { data: video } = await (supabase
     .from('videos')
     .select('id')
     .eq('id', videoId)
-    .eq('owner_id', user.id)
+    .eq('owner_id', user.id) as any)
     .single()
 
   if (!video) {
