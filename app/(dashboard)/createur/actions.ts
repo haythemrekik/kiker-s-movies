@@ -56,14 +56,14 @@ export async function generateCode(formData: FormData) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   
-  if (!user) return { error: 'Non autorisé' }
+  if (!user) return
   
   const videoId = formData.get('videoId') as string
   const userId = formData.get('userId') as string
   const expiresInHours = formData.get('expiresInHours') as string
   
   if (!videoId) {
-    return { error: 'Vidéo requise' }
+    return
   }
 
   // Verify the video belongs to this creator
@@ -75,7 +75,7 @@ export async function generateCode(formData: FormData) {
     .single()
 
   if (!video) {
-    return { error: 'Vidéo introuvable ou vous n\'en êtes pas le propriétaire' }
+    return
   }
 
   const code = Array.from(crypto.getRandomValues(new Uint8Array(4)))
@@ -102,9 +102,8 @@ export async function generateCode(formData: FormData) {
 
   if (error) {
     console.error('Failed to generate code:', error)
-    return { error: 'Erreur lors de la génération du code' }
+    return
   }
 
   revalidatePath('/createur')
-  return { success: true }
 }
