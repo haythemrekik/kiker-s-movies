@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { generateCode } from './actions'
 import { UploadVideoForm } from './UploadVideoForm'
+import { VideoListItem } from './VideoListItem'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import styles from '@/app/(dashboard)/dashboard/page.module.css'
@@ -68,10 +69,7 @@ export default async function CreateurDashboard() {
               <h2 className={adminStyles.cardTitle}>Mes Vidéos</h2>
               <ul style={{ listStyle: 'none', padding: 0 }}>
                 {videos?.map((v: any) => (
-                  <li key={v.id} style={{ padding: '0.5rem 0', borderBottom: '1px solid var(--border)' }}>
-                    <strong>{v.title}</strong>
-                    {v.description && <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>{v.description}</p>}
-                  </li>
+                  <VideoListItem key={v.id} video={v} />
                 ))}
                 {(!videos || videos.length === 0) && (
                   <li style={{ color: 'var(--muted-foreground)' }}>Aucune vidéo uploadée.</li>

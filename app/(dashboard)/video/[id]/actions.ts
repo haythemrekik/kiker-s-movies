@@ -19,11 +19,16 @@ export async function checkAccess(videoId: string): Promise<AccessStatus> {
   const admin = createAdminClient()
   const { data: videoData } = await admin
     .from('videos')
-    .select('id')
+    .select('id, owner_id')
     .eq('id', videoId)
     .single()
 
   if (!videoData) return 'not_found'
+
+  // If the current user is the owner, they can always view the video
+  if (user.id === videoData.owner_id) {
+    return 'allowed'
+  }
 
   // Get view history using admin client to avoid RLS type conflicts
   const { data: viewData } = await admin
@@ -82,41 +87,42 @@ export async function getVideoUrl(
 
   const admin = createAdminClient()
 
-  // Get the video path
+  // Get the video path and owner
   const { data: videoData } = await admin
     .from('videos')
-    .select('video_path, youtube_video_id')
+    .select('video_path, youtube_video_id, owner_id')
     .eq('id', videoId)
     .single()
 
-  const video = videoData as { video_path: string | null; youtube_video_id: string | null } | null
+  const video = videoData as { video_path: string | null; youtube_video_id: string | null; owner_id: string | null } | null
   if (!video) return { error: 'Vidéo introuvable' }
 
-  // Mark as viewed (use admin to bypass RLS)
-  const { data: viewData } = await admin
-    .from('video_views')
-    .select('watch_count')
-    .eq('user_id', user.id)
-    .eq('video_id', videoId)
-    .single()
-
-  const view = viewData as { watch_count: number } | null
-
-  if (!view) {
-    await admin.from('video_views').insert({
-      user_id: user.id,
-      video_id: videoId,
-      watch_count: 1,
-      last_watched_at: new Date().toISOString(),
-    } as any)
-  } else if (view.watch_count === 0) {
-    await admin
+  // Mark as viewed (use admin to bypass RLS) - ONLY if not the owner
+  if (user.id !== video.owner_id) {
+    const { data: viewData } = await admin
       .from('video_views')
-      .update({ watch_count: 1, last_watched_at: new Date().toISOString() } as any)
+      .select('watch_count')
       .eq('user_id', user.id)
       .eq('video_id', videoId)
-  }
+      .single()
 
+    const view = viewData as { watch_count: number } | null
+
+    if (!view) {
+      await admin.from('video_views').insert({
+        user_id: user.id,
+        video_id: videoId,
+        watch_count: 1,
+        last_watched_at: new Date().toISOString(),
+      } as any)
+    } else if (view.watch_count === 0) {
+      await admin
+        .from('video_views')
+        .update({ watch_count: 1, last_watched_at: new Date().toISOString() } as any)
+        .eq('user_id', user.id)
+        .eq('video_id', videoId)
+    }
+  }
   // If it's a YouTube video, we don't need a signed B2 URL
   if (video.youtube_video_id) {
     return { url: 'YOUTUBE' } // Signal it's a YouTube video (though the page handles this)

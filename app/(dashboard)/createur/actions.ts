@@ -110,3 +110,76 @@ export async function generateCode(formData: FormData) {
 
   revalidatePath('/createur')
 }
+
+export async function updateVideoDescription(videoId: string, description: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) return { error: 'Non autorisé' }
+
+  // Verify ownership
+  const admin = createAdminClient()
+  const { data: video } = await admin
+    .from('videos')
+    .select('id')
+    .eq('id', videoId)
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!video) return { error: 'Vidéo introuvable ou accès refusé' }
+
+  const { error } = await admin
+    .from('videos')
+    .update({ description } as any)
+    .eq('id', videoId)
+
+  if (error) return { error: 'Erreur lors de la mise à jour' }
+
+  revalidatePath('/createur')
+  return { success: true }
+}
+
+export async function deleteVideo(videoId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) return { error: 'Non autorisé' }
+
+  const admin = createAdminClient()
+  
+  // Verify ownership and get path
+  const { data: video } = await admin
+    .from('videos')
+    .select('id, video_path')
+    .eq('id', videoId)
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!video) return { error: 'Vidéo introuvable ou accès refusé' }
+
+  // Delete from B2 if there is a path
+  if (video.video_path) {
+    try {
+      const { DeleteObjectCommand } = await import('@aws-sdk/client-s3')
+      const command = new DeleteObjectCommand({
+        Bucket: B2_BUCKET,
+        Key: video.video_path,
+      })
+      await b2Client.send(command)
+    } catch (e) {
+      console.error('Failed to delete from B2', e)
+      // Continue anyway to delete from DB
+    }
+  }
+
+  // Delete from DB (cascade should handle access_codes and video_views)
+  const { error } = await admin
+    .from('videos')
+    .delete()
+    .eq('id', videoId)
+
+  if (error) return { error: 'Erreur lors de la suppression en base de données' }
+
+  revalidatePath('/createur')
+  return { success: true }
+}
