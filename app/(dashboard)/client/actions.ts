@@ -39,7 +39,7 @@ export async function unlockCode(formData: FormData) {
 
   // Appeler la fonction RPC pour utiliser le code
   // NB: redeem_access_code prend (p_code, p_user_id, p_video_id)
-  const { data: success, error: redeemError } = await supabase.rpc('redeem_access_code', {
+  const { data: success, error: redeemError } = await (supabase as any).rpc('redeem_access_code', {
     p_code: code,
     p_user_id: user.id,
     p_video_id: codeData.video_id
