@@ -50,5 +50,5 @@ export async function unlockCode(formData: FormData) {
   }
 
   revalidatePath('/client')
-  return { success: true, videoId: accessCode.video_id }
+  return { success: true, videoId: codeData.video_id }
 }
