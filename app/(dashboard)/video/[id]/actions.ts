@@ -54,7 +54,7 @@ export async function validateCode(
 
   const admin = createAdminClient()
 
-  const { data: success, error } = await admin.rpc('redeem_access_code', {
+  const { data: success, error } = await (admin as any).rpc('redeem_access_code', {
     p_code: code,
     p_user_id: user.id,
     p_video_id: videoId,
