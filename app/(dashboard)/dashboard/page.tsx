@@ -34,7 +34,6 @@ export default async function DashboardPage() {
 
   const videos = videosData as Video[] | null
 
-  const { data: { user } } = await supabase.auth.getUser()
   const { data: viewsData } = await supabase
     .from('video_views')
     .select('*')
