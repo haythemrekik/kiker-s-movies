@@ -44,7 +44,7 @@ export default async function CreateurDashboard() {
           <div className={`glass-panel ${styles.card}`}>
             <h2 className={styles.cardTitle}>Mes Vidéos</h2>
             <ul style={{ listStyle: 'none', padding: 0 }}>
-              {videos?.map(v => (
+              {videos?.map((v: any) => (
                 <li key={v.id} style={{ padding: '0.5rem 0', borderBottom: '1px solid var(--border)' }}>
                   <strong>{v.title}</strong>
                   {v.description && <p style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)' }}>{v.description}</p>}
@@ -67,7 +67,7 @@ export default async function CreateurDashboard() {
                 <label className={styles.label}>Vidéo</label>
                 <select name="videoId" required className={styles.select}>
                   <option value="">Sélectionner une vidéo</option>
-                  {videos?.map(v => (
+                  {videos?.map((v: any) => (
                     <option key={v.id} value={v.id}>{v.title}</option>
                   ))}
                 </select>
@@ -97,7 +97,7 @@ export default async function CreateurDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {codes?.map(code => (
+                  {codes?.map((code: any) => (
                     <tr key={code.id}>
                       <td className={`${styles.td} ${styles.tdMono}`}>{code.code}</td>
                       <td className={`${styles.td} ${styles.tdTruncate}`}>
