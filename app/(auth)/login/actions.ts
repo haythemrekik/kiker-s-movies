@@ -16,7 +16,10 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    return redirect('/login?error=Identifiants invalides ou erreur de connexion')
+    const errorMsg = error.message === 'Invalid login credentials' 
+      ? 'Identifiants invalides ou compte non confirmé.' 
+      : error.message
+    return redirect(`/login?error=${encodeURIComponent(errorMsg)}`)
   }
 
   revalidatePath('/', 'layout')
@@ -33,7 +36,7 @@ export async function signup(formData: FormData) {
   const { data: authData, error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
-    return redirect('/login?error=Erreur lors de la création du compte. Vérifiez vos informations.')
+    return redirect(`/login?error=${encodeURIComponent(error.message)}`)
   }
 
   // Assign role using admin client (bypasses RLS)
@@ -43,6 +46,11 @@ export async function signup(formData: FormData) {
       user_id: authData.user.id,
       role: role,
     })
+  }
+
+  // If session is null, email confirmation is likely required
+  if (!authData.session) {
+    return redirect('/login?message=Compte créé avec succès. Veuillez vérifier votre boîte mail pour confirmer votre inscription.')
   }
 
   revalidatePath('/', 'layout')

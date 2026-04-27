@@ -14,6 +14,8 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
 
+  const message = searchParams.get('message')
+
   return (
     <div className={`glass-panel ${styles.card}`}>
       <div className={styles.logoContainer}>
@@ -46,6 +48,9 @@ function LoginForm() {
       
       {error && (
         <div className={styles.error}>{error}</div>
+      )}
+      {message && (
+        <div className={styles.success}>{message}</div>
       )}
 
       <form className={styles.form}>
