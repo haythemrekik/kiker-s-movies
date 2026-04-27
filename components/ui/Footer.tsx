@@ -13,8 +13,8 @@ export function Footer() {
             <Image 
               src="/logo12.png" 
               alt="OneView" 
-              width={320} 
-              height={107} 
+              width={240} 
+              height={80} 
               className={styles.logo} 
             />
             <p className={styles.tagline}>La marketplace vidéo sécurisée</p>
