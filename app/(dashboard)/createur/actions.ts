@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { b2Client, B2_BUCKET } from '@/lib/b2/client'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
@@ -36,12 +37,13 @@ export async function saveVideoRecord(title: string, description: string, path: 
     return { error: 'Non autorisé' }
   }
 
-  const { error } = await (supabase.from('videos') as any).insert({
+  const admin = createAdminClient()
+  const { error } = await admin.from('videos').insert({
     title,
     description: description || null,
     video_path: path,
     owner_id: user.id
-  })
+  } as any)
 
   if (error) {
     console.error('Failed to save video record:', error)
@@ -67,11 +69,11 @@ export async function generateCode(formData: FormData) {
   }
 
   // Verify the video belongs to this creator
-  const { data: video } = await (supabase
+  const { data: video } = await supabase
     .from('videos')
     .select('id')
     .eq('id', videoId)
-    .eq('owner_id', user.id) as any)
+    .eq('owner_id', user.id)
     .single()
 
   if (!video) {
@@ -93,12 +95,13 @@ export async function generateCode(formData: FormData) {
     expiresAt = date.toISOString()
   }
 
-  const { error } = await (supabase.from('access_codes') as any).insert({
+  const admin = createAdminClient()
+  const { error } = await admin.from('access_codes').insert({
     code,
     video_id: videoId,
     user_id: userId || null,
     expires_at: expiresAt,
-  })
+  } as any)
 
   if (error) {
     console.error('Failed to generate code:', error)

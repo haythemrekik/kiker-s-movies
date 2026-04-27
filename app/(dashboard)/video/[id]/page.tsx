@@ -41,7 +41,7 @@ export default async function VideoPage({ params }: { params: Promise<{ id: stri
   return (
     <div className={styles.container}>
       <Link href="/dashboard" className={styles.backButton}>
-        <Button variant="ghost" size="sm">← Retour au tableau de bord</Button>
+        <Button variant="ghost" size="sm">← Retour à mon espace</Button>
       </Link>
       
       <div className={styles.header}>

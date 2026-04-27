@@ -99,6 +99,8 @@ export interface Database {
           description: string | null
           id: string
           is_hidden: boolean
+          owner_id: string | null
+          target_client_id: string | null
           title: string
           video_path: string | null
           youtube_video_id: string | null
@@ -108,6 +110,8 @@ export interface Database {
           description?: string | null
           id?: string
           is_hidden?: boolean
+          owner_id?: string | null
+          target_client_id?: string | null
           title: string
           video_path?: string | null
           youtube_video_id?: string | null
@@ -117,6 +121,8 @@ export interface Database {
           description?: string | null
           id?: string
           is_hidden?: boolean
+          owner_id?: string | null
+          target_client_id?: string | null
           title?: string
           video_path?: string | null
           youtube_video_id?: string | null

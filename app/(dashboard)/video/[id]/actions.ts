@@ -15,8 +15,9 @@ export async function checkAccess(videoId: string): Promise<AccessStatus> {
 
   if (!user) return 'error'
 
-  // Check if video exists
-  const { data: videoData } = await supabase
+  // Use admin client to check video existence (RLS may block client users)
+  const admin = createAdminClient()
+  const { data: videoData } = await admin
     .from('videos')
     .select('id')
     .eq('id', videoId)
@@ -25,7 +26,6 @@ export async function checkAccess(videoId: string): Promise<AccessStatus> {
   if (!videoData) return 'not_found'
 
   // Get view history using admin client to avoid RLS type conflicts
-  const admin = createAdminClient()
   const { data: viewData } = await admin
     .from('video_views')
     .select('watch_count')

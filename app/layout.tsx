@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "OneView",
-  description: 'Watch Once, Gone Forever',
+  title: "OneView — Marketplace Vidéo",
+  description: 'La marketplace vidéo sécurisée — Livrez vos créations en toute sécurité',
 };
 
 export default function RootLayout({

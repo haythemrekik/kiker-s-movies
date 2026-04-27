@@ -22,7 +22,10 @@ export default async function DashboardPage() {
 
   if (roleData?.role === 'createur') {
     redirect('/createur')
-  } else if (roleData?.role === 'client') {
+  } else if (roleData?.role === 'admin') {
+    redirect('/admin')
+  } else {
+    // Clients and users without a role default to client dashboard
     redirect('/client')
   }
   
@@ -32,18 +35,18 @@ export default async function DashboardPage() {
     .eq('is_hidden', false)
     .order('created_at', { ascending: false })
 
-  const videos = videosData as Video[] | null
+  const videos = (videosData as Video[]) || []
 
   const { data: viewsData } = await supabase
     .from('video_views')
     .select('*')
     .eq('user_id', user?.id || '')
 
-  const views = viewsData as VideoView[] | null
-  const viewsMap = new Map((views || []).map((v) => [v.video_id, v]))
+  const views = (viewsData as VideoView[]) || []
+  const viewsMap = new Map(views.map((v) => [v.video_id, v]))
 
-  const totalVideos = videos?.length || 0
-  const readyToWatch = (videos || []).filter(v => {
+  const totalVideos = videos.length
+  const readyToWatch = videos.filter(v => {
     const view = viewsMap.get(v.id)
     return view !== undefined && view.watch_count === 0
   }).length
@@ -88,7 +91,7 @@ export default async function DashboardPage() {
           <div className={styles.sectionLine} />
         </div>
 
-        {(!videos || videos.length === 0) ? (
+        {videos.length === 0 ? (
           <div className={styles.empty}>
             <div className={styles.emptyIcon}>🎬</div>
             <p className={styles.emptyText}>Aucune vidéo disponible pour le moment.</p>

@@ -12,7 +12,7 @@ export default async function ClientDashboard() {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/auth/login')
+    redirect('/login')
   }
 
   // Get user's unlocked videos from video_views
@@ -29,12 +29,27 @@ export default async function ClientDashboard() {
       <section className={styles.hero} style={{ minHeight: '40vh', paddingTop: '4rem' }}>
         <div className={styles.heroGlow} aria-hidden="true" />
         <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>
+            <span className={styles.heroBadgeDot} />
+            Marketplace Vidéo
+          </div>
           <h1 className={styles.heroTitle}>
             Espace <span className={styles.heroAccent}>Client.</span>
           </h1>
           <p className={styles.heroSubtitle}>
             Entrez votre code d&apos;accès pour visionner les vidéos livrées par vos créateurs. Chaque visionnage est unique et protégé.
           </p>
+          <div className={styles.heroStats}>
+            <div className={styles.heroStat}>
+              <span className={styles.heroStatNumber}>{views.length}</span>
+              <span className={styles.heroStatLabel}>Vidéos débloquées</span>
+            </div>
+            <div className={styles.heroStatDivider} />
+            <div className={styles.heroStat}>
+              <span className={styles.heroStatNumber}>{views.filter((v: any) => v.watch_count === 0).length}</span>
+              <span className={styles.heroStatLabel}>Prêtes à visionner</span>
+            </div>
+          </div>
         </div>
       </section>
 
